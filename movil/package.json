@@ -1,0 +1,23 @@
+{
+  "name": "cenit",
+  "version": "1.0.0",
+  "description": "Cenit — el día sin sombra. Paso cenital del sol en Colombia.",
+  "private": true,
+  "scripts": {
+    "build": "py ../build_movil.py",
+    "sync": "py ../build_movil.py && cap sync android",
+    "abrir": "cap open android",
+    "apk": "cd android && gradlew.bat assembleDebug",
+    "aab": "cd android && gradlew.bat bundleRelease"
+  },
+  "dependencies": {
+    "@capacitor/android": "^7.0.0",
+    "@capacitor/core": "^7.0.0",
+    "@capacitor/local-notifications": "^7.0.0",
+    "@capacitor/status-bar": "^7.0.0"
+  },
+  "devDependencies": {
+    "@capacitor/assets": "^3.0.5",
+    "@capacitor/cli": "^7.0.0"
+  }
+}

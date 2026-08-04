@@ -1,0 +1,18 @@
+{
+  "appId": "co.cenit.diasinsombra",
+  "appName": "Cenit",
+  "webDir": "www",
+  "android": {
+    "allowMixedContent": false
+  },
+  "plugins": {
+    "LocalNotifications": {
+      "smallIcon": "ic_stat_cenit",
+      "iconColor": "#EA8600"
+    },
+    "StatusBar": {
+      "overlaysWebView": false,
+      "style": "DEFAULT"
+    }
+  }
+}

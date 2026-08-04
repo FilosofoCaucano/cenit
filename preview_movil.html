@@ -1,0 +1,2168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<!-- Uno solo, manejado por sincronizarBarraEstado(): con varios <meta
+     theme-color> gana el PRIMERO cuyo media casa, así que una versión
+     con media siempre le ganaría al override manual del usuario. -->
+<meta id="metaTema" name="theme-color" content="#ffffff">
+<meta name="mobile-web-app-capable" content="yes">
+<title>Cenit — Día sin sombra</title>
+<style>*{margin:0;padding:0}</style>
+</head>
+<body>
+<style>
+  :root {
+    --md-primary: #1a73e8;
+    --md-on-primary: #ffffff;
+    --md-primary-container: #d3e3fd;
+    --md-on-primary-container: #041e49;
+    --md-secondary: #ea8600;
+    --md-on-secondary: #ffffff;
+    --md-secondary-container: #feefc3;
+    --md-on-secondary-container: #3f2e00;
+    --md-tertiary: #1e8e3e;
+    --md-on-tertiary: #ffffff;
+    --md-tertiary-container: #ceead6;
+    --md-on-tertiary-container: #0a3818;
+
+    --md-background: #ffffff;
+    --md-on-surface: #202124;
+    --md-on-surface-variant: #5f6368;
+    --md-surface-container-low: #f8f9fa;
+    --md-surface-container: #f1f3f4;
+    --md-surface-container-high: #e8eaed;
+    --md-outline: #9aa0a6;
+    --md-outline-variant: #dadce0;
+    --md-scrim: #000000;
+
+    --sky-top: #a8ccf5;
+    --sky: #dcebff;
+    --ground-far: #d6d9dc;
+    --ground: #f0f1f3;
+    --shadow-ink: #202124;
+    --globe-hi: #4f8fd6;
+    --globe-lo: #14385e;
+    --globe-line: #dbe8f7;
+    --globe-eq: #bfe4ff;
+
+    --page-bg: #f8f9fa;
+    --page-ink: #202124;
+    --page-muted: #5f6368;
+
+    --font-ui: "Google Sans Text", Roboto, "Segoe UI Variable", "Segoe UI", system-ui, -apple-system, sans-serif;
+    --shadow-1: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    --shadow-3: 0 4px 8px 3px rgba(60, 64, 67, 0.15), 0 1px 3px rgba(60, 64, 67, 0.3);
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --md-primary: #8ab4f8;
+      --md-on-primary: #062e6f;
+      --md-primary-container: #0b57d0;
+      --md-on-primary-container: #d3e3fd;
+      --md-secondary: #fdd663;
+      --md-on-secondary: #3f2e00;
+      --md-secondary-container: #664d00;
+      --md-on-secondary-container: #feefc3;
+      --md-tertiary: #81c995;
+      --md-on-tertiary: #0a3818;
+      --md-tertiary-container: #0f5223;
+      --md-on-tertiary-container: #ceead6;
+
+      --md-background: #202124;
+      --md-on-surface: #e8eaed;
+      --md-on-surface-variant: #9aa0a6;
+      --md-surface-container-low: #28292c;
+      --md-surface-container: #2d2e31;
+      --md-surface-container-high: #35363a;
+      --md-outline: #80868b;
+      --md-outline-variant: #3c4043;
+
+      --sky-top: #0d2136;
+      --sky: #24486e;
+      --ground-far: #2a2c2f;
+      --ground: #3c4043;
+      --shadow-ink: #000000;
+    --globe-hi: #2f5f96;
+    --globe-lo: #08192b;
+    --globe-line: #a9c2de;
+    --globe-eq: #6ec6ff;
+
+      --page-bg: #131314;
+      --page-ink: #e8eaed;
+      --page-muted: #9aa0a6;
+      --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+      --shadow-3: 0 4px 8px 3px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --md-primary: #8ab4f8;
+    --md-on-primary: #062e6f;
+    --md-primary-container: #0b57d0;
+    --md-on-primary-container: #d3e3fd;
+    --md-secondary: #fdd663;
+    --md-on-secondary: #3f2e00;
+    --md-secondary-container: #664d00;
+    --md-on-secondary-container: #feefc3;
+    --md-tertiary: #81c995;
+    --md-on-tertiary: #0a3818;
+    --md-tertiary-container: #0f5223;
+    --md-on-tertiary-container: #ceead6;
+    --md-background: #202124;
+    --md-on-surface: #e8eaed;
+    --md-on-surface-variant: #9aa0a6;
+    --md-surface-container-low: #28292c;
+    --md-surface-container: #2d2e31;
+    --md-surface-container-high: #35363a;
+    --md-outline: #80868b;
+    --md-outline-variant: #3c4043;
+    --sky-top: #0d2136;
+    --sky: #24486e;
+    --ground-far: #2a2c2f;
+    --ground: #3c4043;
+    --shadow-ink: #000000;
+    --globe-hi: #2f5f96;
+    --globe-lo: #08192b;
+    --globe-line: #a9c2de;
+    --globe-eq: #6ec6ff;
+    --page-bg: #131314;
+    --page-ink: #e8eaed;
+    --page-muted: #9aa0a6;
+    --shadow-1: 0 1px 2px rgba(0, 0, 0, 0.5), 0 1px 3px 1px rgba(0, 0, 0, 0.3);
+    --shadow-3: 0 4px 8px 3px rgba(0, 0, 0, 0.4), 0 1px 3px rgba(0, 0, 0, 0.4);
+  }
+
+  :root[data-theme="light"] {
+    --md-primary: #1a73e8;
+    --md-on-primary: #ffffff;
+    --md-primary-container: #d3e3fd;
+    --md-on-primary-container: #041e49;
+    --md-secondary: #ea8600;
+    --md-on-secondary: #ffffff;
+    --md-secondary-container: #feefc3;
+    --md-on-secondary-container: #3f2e00;
+    --md-tertiary: #1e8e3e;
+    --md-on-tertiary: #ffffff;
+    --md-tertiary-container: #ceead6;
+    --md-on-tertiary-container: #0a3818;
+    --md-background: #ffffff;
+    --md-on-surface: #202124;
+    --md-on-surface-variant: #5f6368;
+    --md-surface-container-low: #f8f9fa;
+    --md-surface-container: #f1f3f4;
+    --md-surface-container-high: #e8eaed;
+    --md-outline: #9aa0a6;
+    --md-outline-variant: #dadce0;
+    --sky-top: #a8ccf5;
+    --sky: #dcebff;
+    --ground-far: #d6d9dc;
+    --ground: #f0f1f3;
+    --shadow-ink: #202124;
+    --globe-hi: #4f8fd6;
+    --globe-lo: #14385e;
+    --globe-line: #dbe8f7;
+    --globe-eq: #bfe4ff;
+    --page-bg: #f8f9fa;
+    --page-ink: #202124;
+    --page-muted: #5f6368;
+    --shadow-1: 0 1px 2px rgba(60, 64, 67, 0.3), 0 1px 3px 1px rgba(60, 64, 67, 0.15);
+    --shadow-3: 0 4px 8px 3px rgba(60, 64, 67, 0.15), 0 1px 3px rgba(60, 64, 67, 0.3);
+  }
+
+  * { box-sizing: border-box; }
+
+  /* Táctil en Android: el recuadro gris del tap sobra (ya tenemos ripple),
+     los sliders no deben disparar el scroll vertical de la pantalla al
+     arrastrarlos, y las etiquetas no deben quedar seleccionables por
+     mantener el dedo pulsado. */
+  * { -webkit-tap-highlight-color: transparent; }
+  button, summary, .place-btn, .day-chip { -webkit-user-select: none; user-select: none; }
+  input[type="range"] { touch-action: pan-x; }
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    /* el scroll suave no lo cubre la regla de arriba */
+    .screen { scroll-behavior: auto; }
+  }
+
+  .ripple-surface { position: relative; overflow: hidden; }
+  .ripple {
+    position: absolute;
+    border-radius: 50%;
+    transform: scale(0);
+    background: currentColor;
+    opacity: 0.2;
+    pointer-events: none;
+    animation: rippleAnim 460ms ease-out;
+  }
+  @keyframes rippleAnim { to { transform: scale(2.6); opacity: 0; } }
+
+  body {
+    margin: 0;
+    background: var(--page-bg);
+    color: var(--page-ink);
+    font-family: var(--font-ui);
+    min-height: 100vh;
+    padding: 36px 20px 56px;
+  }
+  .wrap { max-width: 1020px; margin: 0 auto; }
+
+  .page-header { text-align: center; max-width: 520px; margin: 0 auto 32px; }
+  .eyebrow {
+    font-size: 12px; font-weight: 600; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--md-primary); margin: 0 0 8px;
+  }
+  .page-header h1 {
+    font-size: clamp(25px, 4vw, 32px); line-height: 1.2; font-weight: 500;
+    margin: 0 0 10px; text-wrap: balance;
+  }
+  .page-header p { font-size: 15px; line-height: 1.6; color: var(--page-muted); margin: 0; }
+
+  /* Vive dentro de la barra de la app: es un control de la app, no de la página,
+     y así sigue disponible en celular (antes se ocultaba por debajo de 480px). */
+  .theme-toggle {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    border: 1px solid var(--md-outline-variant);
+    background: var(--md-surface-container);
+    color: var(--md-on-surface);
+    display: flex; align-items: center; justify-content: center;
+    cursor: pointer;
+  }
+  .theme-toggle svg { width: 20px; height: 20px; }
+  .theme-toggle .moon { display: none; }
+  :root[data-theme="dark"] .theme-toggle .sun { display: none; }
+  :root[data-theme="dark"] .theme-toggle .moon { display: block; }
+  @media (prefers-color-scheme: dark) {
+    .theme-toggle .sun { display: none; }
+    .theme-toggle .moon { display: block; }
+    :root[data-theme="light"] .theme-toggle .sun { display: block; }
+    :root[data-theme="light"] .theme-toggle .moon { display: none; }
+  }
+
+  :focus-visible { outline: 2px solid var(--md-primary); outline-offset: 2px; }
+
+  .layout {
+    display: grid;
+    grid-template-columns: minmax(0, 390px) minmax(0, 290px);
+    justify-content: center; gap: 40px; align-items: start;
+  }
+  @media (max-width: 800px) {
+    .layout { grid-template-columns: minmax(0, 390px); justify-items: center; }
+  }
+
+  .phone {
+    width: 390px; max-width: 100%; height: 844px;
+    border-radius: 44px; background: var(--md-background);
+    border: 10px solid var(--page-ink); box-shadow: var(--shadow-3);
+    position: relative; overflow: hidden; color: var(--md-on-surface);
+  }
+  .notch {
+    position: absolute; top: 8px; left: 50%; transform: translateX(-50%);
+    width: 90px; height: 22px; background: var(--page-ink);
+    border-radius: 12px; z-index: 40;
+  }
+  .status-bar {
+    height: 44px; display: flex; align-items: center; justify-content: space-between;
+    padding: 0 24px; font-size: 13px; font-weight: 500; font-variant-numeric: tabular-nums;
+  }
+  .status-bar .icons { display: flex; gap: 6px; align-items: center; }
+  .status-bar svg { width: 16px; height: 16px; }
+
+  .app-bar {
+    padding: 2px 20px 14px; position: relative; z-index: 10;
+    background: var(--md-background); transition: box-shadow 150ms ease;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .app-bar.scrolled { box-shadow: 0 2px 4px rgba(60, 64, 67, 0.16); }
+  .brand { flex: 1; min-width: 0; }
+  .app-bar h2 {
+    font-size: 24px; font-weight: 500; margin: 0; letter-spacing: -0.01em;
+  }
+  .app-bar .brand p {
+    margin: 0; font-size: 12px; color: var(--md-on-surface-variant);
+  }
+
+  .screen {
+    height: 704px; overflow-y: auto; padding: 0 20px 28px;
+    display: flex; flex-direction: column; gap: 18px; scrollbar-width: thin;
+    scroll-snap-type: y proximity; scroll-behavior: smooth;
+  }
+
+  /* --- Ritmo de lectura ---------------------------------------------------
+     La pantalla es un relato: cada "beat" responde la pregunta siguiente.
+     El scroll-snap da sensación de pasos sin quitarle a nadie el scroll libre,
+     y sin esconder nada detrás de un clic. */
+  .beat {
+    display: flex; flex-direction: column; gap: 18px;
+    scroll-snap-align: start; flex-shrink: 0;
+  }
+  .beat-label {
+    font-size: 11.5px; font-weight: 600; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--md-on-surface-variant);
+    margin: 2px 0 -8px; padding-left: 4px;
+  }
+
+  /* Primera pantalla: solo la respuesta, nada compitiendo con ella. */
+  .beat-hero {
+    min-height: 100%; justify-content: center;
+    position: relative; padding-bottom: 38px;
+  }
+  .scroll-cue {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    display: flex; flex-direction: column; align-items: center; gap: 1px;
+    font-size: 11.5px; font-weight: 500; color: var(--md-on-surface-variant);
+    transition: opacity 250ms ease; pointer-events: none;
+  }
+  .scroll-cue svg { width: 20px; height: 20px; animation: bob 1.9s ease-in-out infinite; }
+  @keyframes bob { 0%, 100% { transform: translateY(-2px); } 50% { transform: translateY(3px); } }
+  .scroll-cue.hide { opacity: 0; }
+
+  /* --- 1. Ubicación: un solo botón grande e inconfundible --- */
+  .place-btn {
+    display: flex; align-items: center; gap: 14px;
+    width: 100%; min-height: 60px; padding: 12px 16px;
+    border: 1px solid var(--md-outline-variant); border-radius: 18px;
+    background: var(--md-surface-container-low);
+    font-family: inherit; color: var(--md-on-surface);
+    cursor: pointer; text-align: left;
+    transition: background 140ms ease, border-color 140ms ease;
+  }
+  .place-btn:hover {
+    background: var(--md-surface-container);
+    border-color: var(--md-outline);
+  }
+  .place-btn:active { transform: scale(0.995); }
+  .place-pin {
+    width: 40px; height: 40px; border-radius: 50%; flex-shrink: 0;
+    background: var(--md-primary-container); color: var(--md-on-primary-container);
+    display: flex; align-items: center; justify-content: center;
+  }
+  .place-pin svg { width: 22px; height: 22px; }
+  .place-body { flex: 1; min-width: 0; }
+  .place-name { font-size: 17px; font-weight: 500; }
+  .place-hint { font-size: 12.5px; color: var(--md-on-surface-variant); margin-top: 1px; }
+  .place-btn .chev { width: 20px; height: 20px; color: var(--md-on-surface-variant); flex-shrink: 0; }
+
+  /* --- 2. La respuesta: un solo número grande --- */
+  .answer {
+    background: var(--md-secondary-container); color: var(--md-on-secondary-container);
+    border-radius: 26px; padding: 26px 22px; text-align: center;
+  }
+  .answer .lead {
+    font-size: 13px; font-weight: 500; opacity: 0.8;
+    letter-spacing: 0.02em;
+  }
+  .answer .big {
+    font-size: 62px; font-weight: 500; line-height: 1;
+    margin: 12px 0 2px; font-variant-numeric: tabular-nums;
+    letter-spacing: -0.03em;
+  }
+  .answer .unit { font-size: 16px; font-weight: 500; opacity: 0.9; }
+
+  /* Fecha y hora: dos campos separados, no una frase corrida */
+  .answer .when {
+    display: grid; grid-template-columns: 1fr 1fr;
+    margin-top: 18px; padding-top: 15px;
+    border-top: 1px solid color-mix(in srgb, var(--md-on-secondary-container) 25%, transparent);
+  }
+  .answer .fld + .fld {
+    border-left: 1px solid color-mix(in srgb, var(--md-on-secondary-container) 25%, transparent);
+  }
+  .fld-lbl {
+    font-size: 10.5px; font-weight: 600; letter-spacing: 0.07em;
+    text-transform: uppercase; opacity: 0.7;
+  }
+  .fld-val {
+    font-size: 16px; font-weight: 600; margin-top: 4px; line-height: 1.2;
+    font-variant-numeric: tabular-nums;
+  }
+  .fld-sub { font-size: 11.5px; opacity: 0.75; margin-top: 2px; }
+
+  .countdown {
+    margin-top: 15px; padding-top: 13px; font-size: 14px; font-weight: 600;
+    font-variant-numeric: tabular-nums; letter-spacing: 0.01em;
+    border-top: 1px solid color-mix(in srgb, var(--md-on-secondary-container) 25%, transparent);
+  }
+
+  /* --- 2b. Aviso: la razón de peso para instalar la app --- */
+  .notify-btn {
+    display: flex; align-items: center; justify-content: center; gap: 9px;
+    width: 100%; min-height: 48px; padding: 12px 16px;
+    border: 1px solid var(--md-outline); border-radius: 24px;
+    background: transparent; color: var(--md-primary);
+    font-family: inherit; font-size: 14.5px; font-weight: 500; cursor: pointer;
+    transition: background 140ms ease, border-color 140ms ease, color 140ms ease;
+  }
+  .notify-btn svg { width: 19px; height: 19px; flex-shrink: 0; }
+  .notify-btn:hover { background: color-mix(in srgb, var(--md-primary) 8%, transparent); }
+  .notify-btn.on {
+    background: var(--md-tertiary-container); color: var(--md-on-tertiary-container);
+    border-color: transparent;
+  }
+
+  /* --- 3. Simulador de sombra --- */
+  .card {
+    background: var(--md-surface-container-low); border-radius: 22px;
+    padding: 18px; border: 1px solid var(--md-outline-variant);
+  }
+  .card > h3 {
+    font-size: 16px; font-weight: 500; margin: 0 0 3px;
+  }
+  .card > .sub { font-size: 13px; color: var(--md-on-surface-variant); margin: 0 0 14px; line-height: 1.45; }
+
+  .day-toggle { display: flex; gap: 8px; margin-bottom: 14px; }
+  .day-chip {
+    flex: 1; height: 38px; border-radius: 19px;
+    border: 1px solid var(--md-outline); background: transparent;
+    font-family: inherit; font-size: 13px; font-weight: 500;
+    color: var(--md-on-surface); cursor: pointer;
+    display: flex; align-items: center; justify-content: center; gap: 6px;
+    transition: background 180ms ease, color 180ms ease, border-color 180ms ease;
+  }
+  .day-chip svg { width: 15px; height: 15px; display: none; }
+  .day-chip.on {
+    background: var(--md-primary-container); color: var(--md-on-primary-container);
+    border-color: transparent;
+  }
+  .day-chip.on svg { display: block; }
+
+  .scene { width: 100%; border-radius: 14px; overflow: hidden; display: block; }
+
+  /* Tres lecturas en paralelo: la hora, cuánto sube el sol y cuánto mide la
+     sombra. Sin la altura del sol, el número de la sombra no explica nada. */
+  .readout {
+    display: grid; grid-template-columns: repeat(3, 1fr);
+    margin-top: 14px; gap: 6px; text-align: center;
+  }
+  .readout > div + div { border-left: 1px solid var(--md-outline-variant); }
+  .ro-num {
+    font-size: 19px; font-weight: 500; font-variant-numeric: tabular-nums;
+    letter-spacing: -0.01em;
+  }
+  .ro-num.acento { color: var(--md-secondary); }
+  .ro-lbl { font-size: 10.5px; color: var(--md-on-surface-variant); margin-top: 1px; }
+  .ro-note {
+    margin: 12px 0 0; font-size: 13px; line-height: 1.5;
+    color: var(--md-on-surface-variant); text-align: center; min-height: 38px;
+  }
+  .ro-note strong { color: var(--md-on-surface); font-weight: 600; }
+
+  input[type="range"] {
+    -webkit-appearance: none; appearance: none;
+    width: 100%; height: 36px; background: transparent; cursor: pointer; margin: 2px 0 0;
+  }
+  input[type="range"]::-webkit-slider-runnable-track {
+    height: 6px; border-radius: 3px; background: var(--md-outline-variant);
+  }
+  input[type="range"]::-webkit-slider-thumb {
+    -webkit-appearance: none; appearance: none;
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--md-primary); border: none; margin-top: -8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  input[type="range"]::-moz-range-track {
+    height: 6px; border-radius: 3px; background: var(--md-outline-variant);
+  }
+  input[type="range"]::-moz-range-thumb {
+    width: 22px; height: 22px; border-radius: 50%;
+    background: var(--md-primary); border: none;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+  }
+  .slider-ends {
+    display: flex; justify-content: space-between;
+    font-size: 11.5px; color: var(--md-on-surface-variant); margin-top: -2px;
+  }
+  .drag-hint {
+    display: flex; align-items: center; justify-content: center; gap: 7px;
+    font-size: 12.5px; color: var(--md-primary); font-weight: 500;
+    margin-top: 10px; transition: opacity 300ms ease;
+  }
+  .drag-hint svg { width: 16px; height: 16px; animation: nudge 1.5s ease-in-out infinite; }
+  @keyframes nudge { 0%,100% { transform: translateX(-3px);} 50% { transform: translateX(3px);} }
+  .drag-hint.hide { opacity: 0; }
+
+  /* --- 4. Explicación plegable --- */
+  details {
+    background: var(--md-surface-container-low); border-radius: 18px;
+    border: 1px solid var(--md-outline-variant); overflow: hidden;
+  }
+  details + details { margin-top: -6px; }
+  summary {
+    list-style: none; cursor: pointer; padding: 16px 18px;
+    font-size: 15px; font-weight: 500;
+    display: flex; align-items: center; justify-content: space-between; gap: 10px;
+  }
+  summary::-webkit-details-marker { display: none; }
+  summary .chev { width: 20px; height: 20px; color: var(--md-on-surface-variant); transition: transform 180ms ease; flex-shrink: 0; }
+  details[open] summary .chev { transform: rotate(180deg); }
+  details .body {
+    padding: 0 18px 18px; font-size: 14px; line-height: 1.6;
+    color: var(--md-on-surface-variant);
+  }
+  details .body p { margin: 0 0 10px; }
+  details .body p:last-child { margin-bottom: 0; }
+  details .body strong { color: var(--md-on-surface); }
+
+  /* --- 5. Curva del año: qué tan alto llega el sol cada día --- */
+  .year-card h3 { margin-bottom: 2px; }
+  .year-chart { width: 100%; display: block; margin-top: 14px; overflow: visible; }
+  .year-months {
+    display: flex; justify-content: space-between; margin-top: 6px;
+    font-size: 10px; color: var(--md-on-surface-variant);
+  }
+  .year-key {
+    display: flex; gap: 16px; margin-top: 12px; flex-wrap: wrap;
+    font-size: 11.5px; color: var(--md-on-surface-variant);
+  }
+  .year-key span { display: flex; align-items: center; gap: 6px; }
+  .key-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--md-secondary); }
+  .key-line { width: 2.5px; height: 11px; border-radius: 2px; background: var(--md-primary); }
+
+  /* --- 6. Las dos fechas: viven dentro de la tarjeta del año, porque son
+         exactamente los dos puntos que marca la curva. --- */
+  .dates-inline {
+    margin-top: 16px; padding-top: 6px;
+    border-top: 1px solid var(--md-outline-variant);
+  }
+  .date-row {
+    display: flex; align-items: center; gap: 14px; padding: 12px 10px;
+    border-radius: 14px;
+  }
+  .date-row.next { background: var(--md-primary-container); color: var(--md-on-primary-container); }
+  .date-mark {
+    width: 38px; height: 38px; border-radius: 12px; flex-shrink: 0;
+    background: var(--md-surface-container-high); color: var(--md-on-surface-variant);
+    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    line-height: 1.05;
+  }
+  .date-row.next .date-mark { background: rgba(255,255,255,0.5); color: var(--md-on-primary-container); }
+  :root[data-theme="dark"] .date-row.next .date-mark,
+  .date-mark.dark-fix { background: rgba(0,0,0,0.18); }
+  .date-mark .d { font-size: 15px; font-weight: 600; font-variant-numeric: tabular-nums; }
+  .date-mark .m { font-size: 9px; text-transform: uppercase; letter-spacing: 0.04em; }
+  .date-info { flex: 1; min-width: 0; }
+  .date-info .t { font-size: 14px; font-weight: 500; }
+  .date-info .s { font-size: 12px; opacity: 0.75; margin-top: 1px; }
+
+  /* --- 7. Globo --- */
+  .globe { width: 100%; display: block; margin: 4px 0 2px; overflow: visible; }
+  .globe-readout {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 6px;
+    text-align: center; margin-top: 6px;
+  }
+  .globe-readout > div + div { border-left: 1px solid var(--md-outline-variant); }
+  .globe-card .ro-note { min-height: 0; margin-top: 10px; }
+
+  /* --- bottom sheet --- */
+  .scrim {
+    position: absolute; inset: 0; background: var(--md-scrim);
+    opacity: 0; pointer-events: none; transition: opacity 200ms ease; z-index: 30;
+  }
+  .sheet {
+    position: absolute; left: 0; right: 0; bottom: 0;
+    background: var(--md-surface-container-high);
+    border-radius: 28px 28px 0 0; padding: 10px 18px 22px;
+    transform: translateY(105%); transition: transform 260ms cubic-bezier(0.2,0,0,1);
+    z-index: 31; box-shadow: var(--shadow-3); max-height: 88%;
+    display: flex; flex-direction: column;
+  }
+  .phone.sheet-open .scrim { opacity: 0.4; pointer-events: auto; }
+  .phone.sheet-open .sheet { transform: translateY(0); }
+  .sheet-handle {
+    width: 32px; height: 4px; border-radius: 2px;
+    background: var(--md-outline-variant); margin: 0 auto 14px; flex-shrink: 0;
+  }
+  .sheet h4 { margin: 0 0 12px; font-size: 17px; font-weight: 500; flex-shrink: 0; }
+  .field {
+    display: flex; align-items: center; gap: 8px; height: 46px; padding: 0 14px;
+    border-radius: 23px; background: var(--md-surface-container);
+    margin-bottom: 12px; flex-shrink: 0;
+  }
+  .field svg { width: 18px; height: 18px; color: var(--md-on-surface-variant); flex-shrink: 0; }
+  .field input {
+    border: none; outline: none; background: transparent; font-family: inherit;
+    font-size: 14px; color: var(--md-on-surface); flex: 1; min-width: 0;
+  }
+  .field input::placeholder { color: var(--md-on-surface-variant); }
+
+  .sheet-head { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+  .back-btn {
+    width: 36px; height: 36px; border-radius: 50%; border: none; flex-shrink: 0;
+    background: transparent; color: var(--md-on-surface);
+    display: none; align-items: center; justify-content: center; cursor: pointer;
+  }
+  .back-btn.show { display: flex; }
+  .back-btn:hover { background: color-mix(in srgb, var(--md-on-surface) 8%, transparent); }
+  .back-btn svg { width: 20px; height: 20px; }
+
+  .city-list { overflow-y: auto; flex: 1; min-height: 0; }
+
+  .depto-row, .sheet-city {
+    width: 100%; display: flex; align-items: center; gap: 12px;
+    padding: 13px 10px; border-radius: 12px; border: none; background: transparent;
+    font-family: inherit; font-size: 14.5px; color: var(--md-on-surface);
+    cursor: pointer; text-align: left;
+  }
+  .depto-row:hover, .sheet-city:hover { background: color-mix(in srgb, var(--md-primary) 8%, transparent); }
+
+  .depto-row .depto-name { flex: 1; min-width: 0; }
+  .depto-row .depto-count {
+    font-size: 12px; color: var(--md-on-surface-variant);
+    font-variant-numeric: tabular-nums;
+  }
+  .depto-row .chev { width: 18px; height: 18px; color: var(--md-on-surface-variant); flex-shrink: 0; }
+
+  .sheet-city .radio {
+    width: 20px; height: 20px; border-radius: 50%; border: 2px solid var(--md-outline);
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+  }
+  .sheet-city.selected .radio { border-color: var(--md-primary); }
+  .sheet-city.selected .radio::after {
+    content: ""; width: 10px; height: 10px; border-radius: 50%; background: var(--md-primary);
+  }
+  .sheet-city .city-body { flex: 1; min-width: 0; }
+  .sheet-city .city-sub {
+    font-size: 12px; color: var(--md-on-surface-variant); margin-top: 1px;
+  }
+  .tag {
+    font-size: 10px; font-weight: 600; padding: 3px 8px; border-radius: 6px;
+    background: var(--md-secondary-container); color: var(--md-on-secondary-container);
+    white-space: nowrap; margin-left: auto; flex-shrink: 0;
+  }
+  .empty-state {
+    text-align: center; padding: 20px 0; font-size: 13.5px;
+    color: var(--md-on-surface-variant); display: none;
+  }
+
+  .snackbar {
+    position: absolute; left: 16px; right: 16px; bottom: 24px;
+    background: #303134; color: #e8eaed; font-size: 13.5px;
+    border-radius: 10px; padding: 14px 16px; box-shadow: var(--shadow-3);
+    transform: translateY(24px); opacity: 0; pointer-events: none;
+    transition: transform 220ms cubic-bezier(0.2,0,0,1), opacity 220ms ease; z-index: 60;
+  }
+  .snackbar.show { transform: translateY(0); opacity: 1; }
+
+  .notes {
+    background: var(--md-surface-container-low); border: 1px solid var(--md-outline-variant);
+    border-radius: 16px; padding: 20px; font-size: 13px; line-height: 1.6;
+    color: var(--page-ink); position: sticky; top: 24px;
+  }
+  .notes h4 {
+    font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.08em;
+    color: var(--md-primary); margin: 0 0 12px;
+  }
+  .notes dl { margin: 0; }
+  .notes dt { font-weight: 600; margin-top: 14px; }
+  .notes dt:first-child { margin-top: 0; }
+  .notes dd { margin: 2px 0 0; color: var(--page-muted); }
+  @media (max-width: 800px) {
+    .notes { position: static; margin-top: 4px; width: 100%; max-width: 390px; }
+  }
+
+  /* En celular real: la app ocupa toda la pantalla.
+     `env(safe-area-inset-*)` es obligatorio porque el <meta viewport> declara
+     viewport-fit=cover: sin esto el contenido se mete bajo el notch y bajo la
+     barra de gestos. 100vh queda como fallback para WebViews < Chrome 108. */
+  @media (max-width: 480px) {
+    body { padding: 0; }
+    .page-header, .notch, .status-bar, .notes { display: none; }
+    .wrap { max-width: none; }
+    .layout { gap: 0; }
+    .phone {
+      width: 100vw; max-width: none;
+      height: 100vh; height: 100dvh;
+      border: none; border-radius: 0; box-shadow: none;
+    }
+    .app-bar { padding-top: calc(14px + env(safe-area-inset-top, 0px)); }
+    .screen {
+      height: calc(100vh - 66px - env(safe-area-inset-top, 0px));
+      height: calc(100dvh - 66px - env(safe-area-inset-top, 0px));
+      padding-bottom: calc(28px + env(safe-area-inset-bottom, 0px));
+    }
+    .sheet { padding-bottom: calc(22px + env(safe-area-inset-bottom, 0px)); }
+    .snackbar { bottom: calc(24px + env(safe-area-inset-bottom, 0px)); }
+  }
+</style>
+
+<div class="wrap">
+  <header class="page-header">
+    <p class="eyebrow">Vista previa &middot; Material Design 3</p>
+    <h1>Una sola pregunta, una sola respuesta</h1>
+    <p>La pantalla ahora se lee como un relato de cinco pasos: primero la respuesta sola, y solo después el porqué. Nada se escondió — todo sigue a un scroll de distancia.</p>
+  </header>
+
+  <div class="layout">
+    <div class="phone" id="phone">
+      <div class="notch"></div>
+
+      <div class="status-bar">
+        <span>9:41</span>
+        <div class="icons">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M2 17h2v-4H2v4zm4 0h2V9H6v8zm4 0h2V5h-2v12zm4 0h2v-9h-2v9zm4-13v13h2V4h-2z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 9l2 2c4.9-4.9 12.1-4.9 17 0l2-2C15.9 2.9 8.1 2.9 1 9zm8 8l3 3 3-3a4.2 4.2 0 0 0-6 0zm-4-4l2 2a8.4 8.4 0 0 1 10 0l2-2a11.3 11.3 0 0 0-14 0z"/></svg>
+          <svg viewBox="0 0 24 24" fill="currentColor"><rect x="2" y="7" width="18" height="10" rx="2" fill="none" stroke="currentColor" stroke-width="1.6"/><rect x="4" y="9" width="12" height="6" rx="1"/><rect x="21" y="10" width="1.6" height="4" rx="0.8"/></svg>
+        </div>
+      </div>
+
+      <div class="app-bar" id="appBar">
+        <div class="brand">
+          <h2>Cenit</h2>
+          <p>El día sin sombra</p>
+        </div>
+        <button class="theme-toggle ripple-surface" onpointerdown="ripple(event)" onclick="toggleTheme()" aria-label="Cambiar tema">
+          <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4.5"/><path d="M12 2v3M12 19v3M4.2 4.2l2.1 2.1M17.7 17.7l2.1 2.1M2 12h3M19 12h3M4.2 19.8l2.1-2.1M17.7 6.3l2.1-2.1"/></svg>
+          <svg class="moon" viewBox="0 0 24 24" fill="currentColor"><path d="M20.5 14.5A8.5 8.5 0 0 1 9.5 3.5a.6.6 0 0 0-.8-.7A9.5 9.5 0 1 0 21.2 15.3a.6.6 0 0 0-.7-.8z"/></svg>
+        </button>
+      </div>
+
+      <div class="screen" id="screen" onscroll="onScroll(this)">
+
+        <!-- PASO 1 · La respuesta. Ocupa la primera pantalla entera para que nada
+             compita con ella. La pista de abajo avisa que el relato sigue. -->
+        <section class="beat beat-hero">
+
+        <button class="place-btn ripple-surface" onpointerdown="ripple(event)" onclick="abrirHoja()">
+          <span class="place-pin">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C8.1 2 5 5.1 5 9c0 5.2 7 13 7 13s7-7.8 7-13c0-3.9-3.1-7-7-7zm0 9.5A2.5 2.5 0 1 1 12 6.5a2.5 2.5 0 0 1 0 5z"/></svg>
+          </span>
+          <span class="place-body">
+            <span class="place-name" id="placeName">Bogotá</span>
+            <span class="place-hint">Toca para cambiar de lugar</span>
+          </span>
+          <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>
+        </button>
+
+        <div class="answer">
+          <div class="lead">Tu próximo paso cenital</div>
+          <div class="big" id="daysLeft">44</div>
+          <div class="unit" id="daysUnit">días</div>
+
+          <!-- Fecha y hora son dos datos distintos: antes iban pegados en una
+               frase corrida y la hora se perdía. Ahora cada uno es un campo. -->
+          <div class="when">
+            <div class="fld">
+              <div class="fld-lbl">Fecha</div>
+              <div class="fld-val" id="nextDate">10 de septiembre</div>
+              <div class="fld-sub" id="nextYear">de 2026</div>
+            </div>
+            <div class="fld">
+              <div class="fld-lbl">Hora exacta</div>
+              <div class="fld-val" id="nextTime">11:53 a.m.</div>
+              <div class="fld-sub">hora de Colombia</div>
+            </div>
+          </div>
+
+          <div class="countdown" id="countdown">—</div>
+        </div>
+
+        <button class="notify-btn ripple-surface" id="notifyBtn"
+                onpointerdown="ripple(event)" onclick="alternarAviso()">
+          <svg id="notifyIcon" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+               stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M18 8a6 6 0 1 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"/>
+            <path d="M13.7 21a2 2 0 0 1-3.4 0"/>
+          </svg>
+          <span id="notifyTxt">Avísame el día antes</span>
+        </button>
+
+        <div class="scroll-cue" id="scrollCue">
+          <span>Desliza para entender por qué</span>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+        </div>
+
+        </section>
+
+        <!-- PASO 2 · Cómo se ve -->
+        <section class="beat">
+        <p class="beat-label">Cómo se ve</p>
+
+        <div class="card">
+          <h3>Mira cómo se encoge</h3>
+          <p class="sub">Desliza la barra para recorrer el día y ver la sombra de una persona de 1,70 m.</p>
+
+          <div class="day-toggle">
+            <button class="day-chip ripple-surface" id="chipHoy" onpointerdown="ripple(event)" onclick="setDia('hoy')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>
+              Hoy
+            </button>
+            <button class="day-chip on ripple-surface" id="chipCenit" onpointerdown="ripple(event)" onclick="setDia('cenit')">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12l5 5L19 7"/></svg>
+              Día sin sombra
+            </button>
+          </div>
+
+          <svg class="scene" viewBox="0 0 320 200" id="scene">
+            <defs>
+              <linearGradient id="skyGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--sky-top)"/>
+                <stop offset="100%" stop-color="var(--sky)"/>
+              </linearGradient>
+              <linearGradient id="groundGrad" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--ground-far)"/>
+                <stop offset="100%" stop-color="var(--ground)"/>
+              </linearGradient>
+              <filter id="softShadow" x="-60%" y="-60%" width="220%" height="220%">
+                <feGaussianBlur stdDeviation="1.4"/>
+              </filter>
+              <radialGradient id="sunGlowGrad">
+                <stop offset="0%" stop-color="#fbbc04" stop-opacity="0.55"/>
+                <stop offset="100%" stop-color="#fbbc04" stop-opacity="0"/>
+              </radialGradient>
+            </defs>
+
+            <rect x="0" y="0" width="320" height="146" fill="url(#skyGrad)"/>
+            <rect x="0" y="146" width="320" height="54" fill="url(#groundGrad)"/>
+
+            <!-- Recorrido real del sol ese día; lo dibuja dibujarEscena().
+                 Antes era un semicírculo fijo cuyo vértice el sol nunca
+                 alcanzaba, ni siquiera en el paso cenital. -->
+            <path id="arco" fill="none" stroke="var(--md-outline-variant)"
+                  stroke-width="1.4" stroke-dasharray="3 5" opacity="0.8"/>
+
+            <!-- líneas de suelo: dan la sensación de plano, no de pared -->
+            <g stroke="var(--md-outline-variant)" stroke-width="0.8" opacity="0.5">
+              <line x1="0" y1="158" x2="320" y2="158"/>
+              <line x1="0" y1="174" x2="320" y2="174"/>
+              <line x1="0" y1="192" x2="320" y2="192"/>
+            </g>
+
+            <!-- Regla del suelo: una marca por metro desde los pies. Sin esto,
+                 "2,4 m" es un número abstracto; con esto se ve. -->
+            <g id="regla" stroke="var(--md-outline)" stroke-width="0.9" opacity="0.6"></g>
+            <text x="190.6" y="166" font-size="7.5" text-anchor="middle"
+                  fill="var(--md-on-surface-variant)">1 m</text>
+
+            <!-- Referencia de altura: contra qué comparar la sombra -->
+            <g stroke="var(--md-outline)" stroke-width="0.9" opacity="0.65">
+              <line x1="140" y1="99.5" x2="140" y2="152"/>
+              <line x1="137" y1="99.5" x2="143" y2="99.5"/>
+              <line x1="137" y1="152" x2="143" y2="152"/>
+            </g>
+            <text x="136" y="128" font-size="8" text-anchor="end"
+                  fill="var(--md-on-surface-variant)">1,70 m</text>
+
+            <g id="sunGroup">
+              <circle id="sunGlow" cx="160" cy="20" r="30" fill="url(#sunGlowGrad)"/>
+              <circle id="sun" cx="160" cy="20" r="12" fill="#fbbc04"/>
+            </g>
+
+            <!-- la sombra es la MISMA silueta, aplastada contra el suelo -->
+            <g id="shadow" fill="var(--shadow-ink)" opacity="0.45" filter="url(#softShadow)">
+              <circle cx="0" cy="-46" r="6.5"/>
+              <rect x="-4" y="-39" width="8" height="21" rx="3.5"/>
+              <rect x="-9" y="-36" width="5" height="15" rx="2.4"/>
+              <rect x="4" y="-36" width="5" height="15" rx="2.4"/>
+              <rect x="-5.2" y="-18" width="4.4" height="18" rx="2"/>
+              <rect x="0.8" y="-18" width="4.4" height="18" rx="2"/>
+              <ellipse cx="-3" cy="0" rx="4.4" ry="1.8"/>
+              <ellipse cx="3" cy="0" rx="4.4" ry="1.8"/>
+            </g>
+
+            <!-- persona: mismo dibujo, de pie -->
+            <g id="person" fill="var(--md-on-surface)" transform="translate(160,152)">
+              <circle cx="0" cy="-46" r="6.5"/>
+              <rect x="-4" y="-39" width="8" height="21" rx="3.5"/>
+              <rect x="-9" y="-36" width="5" height="15" rx="2.4"/>
+              <rect x="4" y="-36" width="5" height="15" rx="2.4"/>
+              <rect x="-5.2" y="-18" width="4.4" height="18" rx="2"/>
+              <rect x="0.8" y="-18" width="4.4" height="18" rx="2"/>
+              <ellipse cx="-3" cy="0" rx="4.4" ry="1.8"/>
+              <ellipse cx="3" cy="0" rx="4.4" ry="1.8"/>
+            </g>
+
+            <!-- La medida, pegada a la punta de la sombra -->
+            <text id="tipLbl" font-size="9.5" font-weight="700" text-anchor="middle"
+                  fill="var(--md-secondary)"></text>
+          </svg>
+
+          <div class="readout">
+            <div>
+              <div class="ro-num" id="timeOut">12:00 p.m.</div>
+              <div class="ro-lbl">hora</div>
+            </div>
+            <div>
+              <div class="ro-num" id="elevOut">90°</div>
+              <div class="ro-lbl">altura del sol</div>
+            </div>
+            <div>
+              <div class="ro-num acento" id="lenOut">0 cm</div>
+              <div class="ro-lbl">tu sombra</div>
+            </div>
+          </div>
+
+          <p class="ro-note" id="roNote"></p>
+
+          <input type="range" id="slider" min="360" max="1080" value="720" step="5"
+                 aria-label="Hora del día" oninput="onSlide(this.value)">
+          <div class="slider-ends"><span>6 a.m.</span><span>6 p.m.</span></div>
+
+          <div class="drag-hint" id="dragHint">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 8l-4 4 4 4M16 8l4 4-4 4"/></svg>
+            Desliza la barra
+          </div>
+        </div>
+
+        </section>
+
+        <!-- PASO 3 · Por qué pasa. Los <details> ya son progressive disclosure:
+             el detalle está ahí para quien lo quiera, sin estorbarle a quien no. -->
+        <section class="beat">
+        <p class="beat-label">Por qué pasa</p>
+
+        <details>
+          <summary>
+            ¿Qué quiere decir «cenit»?
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="body">
+            <p>El <strong>cenit</strong> es el punto del cielo que te queda <strong>justo encima de la cabeza</strong>. No importa dónde estés: siempre tienes uno, exactamente a 90° sobre el horizonte.</p>
+            <p>Cuando el sol llega a ese punto exacto, hay <strong>paso cenital</strong>. Es lo que esta app calcula: los dos instantes del año en que el sol cruza tu cenit.</p>
+            <p>La palabra viene del árabe <em>samt</em>, «el camino» — de <em>samt ar-ra's</em>, «el camino sobre la cabeza».</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            ¿Qué es un día sin sombra?
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="body">
+            <p>Casi siempre el sol pasa un poco al norte o al sur de ti, así que algo de sombra queda. Pero <strong>dos días al año</strong> pasa exactamente por encima de tu cabeza.</p>
+            <p>En ese momento tu sombra se mete debajo de tus pies y prácticamente <strong>desaparece</strong>, por unos segundos. Un poste tampoco proyecta sombra.</p>
+          </div>
+        </details>
+
+        <details>
+          <summary>
+            ¿Por qué aquí sí y en otros países no?
+            <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"/></svg>
+          </summary>
+          <div class="body">
+            <p>El sol solo llega al punto más alto del cielo en la franja entre los trópicos: <strong>Colombia entera está adentro</strong>.</p>
+            <p>En Madrid, Nueva York o Buenos Aires <strong>nunca</strong> pasa: allí siempre queda sombra, todos los días del año.</p>
+          </div>
+        </details>
+
+        </section>
+
+        <!-- PASO 4 · El año completo. La curva y las dos fechas van juntas:
+             los dos puntos del gráfico SON las dos fechas. -->
+        <section class="beat">
+        <p class="beat-label">Tu año completo</p>
+
+        <div class="card year-card">
+          <h3>Qué tan alto llega el sol</h3>
+          <p class="sub">Altura máxima del sol al mediodía, día por día. Los dos picos que tocan el techo son tus días sin sombra.</p>
+
+          <svg class="year-chart" viewBox="0 0 300 92" id="yearChart" role="img"
+               aria-label="Curva de la altura máxima del sol durante el año">
+            <defs>
+              <linearGradient id="yearFill" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stop-color="var(--md-secondary)" stop-opacity="0.32"/>
+                <stop offset="100%" stop-color="var(--md-secondary)" stop-opacity="0.02"/>
+              </linearGradient>
+            </defs>
+            <line x1="0" y1="14" x2="300" y2="14" stroke="var(--md-outline-variant)"
+                  stroke-width="1" stroke-dasharray="3 4"/>
+            <text x="2" y="10" font-size="8.5" fill="var(--md-on-surface-variant)">90° · justo encima</text>
+            <path id="yearArea" fill="url(#yearFill)"/>
+            <path id="yearLine" fill="none" stroke="var(--md-secondary)"
+                  stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>
+            <line id="yearToday" y1="10" y2="76" stroke="var(--md-primary)"
+                  stroke-width="2.5" stroke-linecap="round"/>
+            <circle id="yearMark1" r="4.5" fill="var(--md-secondary)"
+                    stroke="var(--md-surface-container-low)" stroke-width="2.5"/>
+            <circle id="yearMark2" r="4.5" fill="var(--md-secondary)"
+                    stroke="var(--md-surface-container-low)" stroke-width="2.5"/>
+          </svg>
+
+          <div class="year-months">
+            <span>ene</span><span>abr</span><span>jul</span><span>oct</span><span>dic</span>
+          </div>
+          <div class="year-key">
+            <span><i class="key-dot"></i>Días sin sombra</span>
+            <span><i class="key-line"></i>Hoy</span>
+          </div>
+
+          <div class="dates-inline">
+            <div class="date-row" id="row1">
+              <div class="date-mark"><span class="d" id="d1">1</span><span class="m" id="m1">abr</span></div>
+              <div class="date-info">
+                <div class="t">Primer día del año</div>
+                <div class="s">Ya pasó en 2026</div>
+              </div>
+            </div>
+            <div class="date-row next" id="row2">
+              <div class="date-mark"><span class="d" id="d2">10</span><span class="m" id="m2">sep</span></div>
+              <div class="date-info">
+                <div class="t">Segundo día del año</div>
+                <div class="s">Este es el próximo</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        </section>
+
+        <!-- PASO 5 · El globo. Visto desde tu meridiano, el punto subsolar sube
+             y baja por una línea vertical entre los dos trópicos: cuando cruza
+             tu pin, ese es tu paso cenital. Todo en SVG, sin librerías. -->
+        <section class="beat">
+        <p class="beat-label">Dónde está el sol</p>
+
+        <div class="card globe-card">
+          <h3>El sol sobre la Tierra</h3>
+          <p class="sub">Mirando desde tu meridiano. El punto amarillo es el lugar donde el sol cae perpendicular en este momento del año.</p>
+
+          <svg class="globe" viewBox="0 0 300 300" id="globo" role="img"
+               aria-label="Globo con el punto subsolar y tu ubicación">
+            <defs>
+              <radialGradient id="oceano" cx="38%" cy="32%">
+                <stop offset="0%" stop-color="var(--globe-hi)"/>
+                <stop offset="100%" stop-color="var(--globe-lo)"/>
+              </radialGradient>
+              <clipPath id="recorteGlobo"><circle cx="150" cy="150" r="130"/></clipPath>
+            </defs>
+
+            <circle cx="150" cy="150" r="130" fill="url(#oceano)"/>
+
+            <g clip-path="url(#recorteGlobo)">
+              <!-- franja tropical: la única del planeta donde esto puede pasar -->
+              <rect id="franja" x="20" width="260" fill="var(--md-secondary)" opacity="0.16"/>
+              <g id="reticula" stroke="var(--globe-line)" stroke-width="0.9"
+                 fill="none" opacity="0.5"></g>
+              <g id="tropicos" stroke="var(--md-secondary)" stroke-width="1.2"
+                 stroke-dasharray="4 4" opacity="0.9"></g>
+              <line id="ecuador" stroke="var(--globe-eq)" stroke-width="1.4" opacity="0.85"/>
+              <line id="meridiano" x1="150" y1="20" x2="150" y2="280"
+                    stroke="var(--globe-line)" stroke-width="1.1" opacity="0.55"/>
+            </g>
+
+            <circle cx="150" cy="150" r="130" fill="none"
+                    stroke="var(--globe-line)" stroke-width="1.2" opacity="0.7"/>
+
+            <!-- rastro del punto subsolar a lo largo del año -->
+            <line id="rastro" x1="150" x2="150" stroke="var(--md-secondary)"
+                  stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+
+            <g id="marcaSol">
+              <circle id="solGlow" r="17" fill="url(#sunGlowGrad)"/>
+              <circle id="solPt" r="7.5" fill="#fdd663" stroke="#b06000" stroke-width="1"/>
+            </g>
+
+            <g id="marcaTu">
+              <circle id="tuPt" r="5" fill="#e8453c" stroke="#fff" stroke-width="1.8"/>
+            </g>
+
+            <text id="lblTropN" font-size="8.5" fill="var(--md-on-surface-variant)" text-anchor="end">Trópico de Cáncer</text>
+            <text id="lblTropS" font-size="8.5" fill="var(--md-on-surface-variant)" text-anchor="end">Trópico de Capricornio</text>
+            <text id="lblEcu" font-size="8.5" fill="var(--md-on-surface-variant)" text-anchor="end">Ecuador</text>
+          </svg>
+
+          <div class="globe-readout">
+            <div><div class="ro-num" id="globoFecha">—</div><div class="ro-lbl">día del año</div></div>
+            <div><div class="ro-num acento" id="globoDist">—</div><div class="ro-lbl">del sol a ti</div></div>
+          </div>
+
+          <input type="range" id="globoSlider" min="1" max="365" value="1" step="1"
+                 aria-label="Día del año" oninput="onGlobo(this.value)">
+
+          <div class="day-toggle" style="margin: 12px 0 0;">
+            <button class="day-chip on ripple-surface" id="gChipHoy" onpointerdown="ripple(event)" onclick="globoIr('hoy')">Hoy</button>
+            <button class="day-chip ripple-surface" id="gChipCenit" onpointerdown="ripple(event)" onclick="globoIr('cenit')">Tu paso cenital</button>
+          </div>
+
+          <p class="ro-note" id="globoNota"></p>
+        </div>
+
+        </section>
+      </div>
+
+      <div class="scrim" onclick="cerrarHoja()"></div>
+      <div class="sheet">
+        <div class="sheet-handle"></div>
+        <div class="sheet-head">
+          <button class="back-btn ripple-surface" id="backBtn" onpointerdown="ripple(event)" onclick="volverADeptos()" aria-label="Volver a departamentos">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg>
+          </button>
+          <h4 id="sheetTitle">¿Dónde estás?</h4>
+        </div>
+
+        <div class="field">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="M21 21l-4.3-4.3"/></svg>
+          <input type="text" id="searchInput" placeholder="Busca tu municipio" oninput="buscar(this.value)" aria-label="Buscar municipio">
+        </div>
+
+        <div class="city-list" id="cityList"></div>
+        <p class="empty-state" id="emptyState">No encontramos ese lugar.</p>
+      </div>
+
+      <div class="snackbar" id="snackbar"></div>
+    </div>
+
+    <aside class="notes">
+      <h4>Novedades</h4>
+      <dl>
+        <dt>La app ya no caduca</dt>
+        <dd>El motor solar de <code>solar.py</code> está portado a JavaScript: fechas y horas se calculan en el celular a partir de tu latitud y longitud. Antes venían precocinadas para 2026 dentro del HTML y en 2027 ya se corrían hasta un día. Verificado contra el motor de Python: <strong>3.920 pasos cenitales — 280 municipios × 7 años hasta 2050 — coinciden exactamente</strong>, y las elevaciones solares salen idénticas hasta el último bit.</dd>
+        <dt>Faltaba la longitud</dt>
+        <dd>El dataset del móvil solo traía latitud, y sin longitud no hay hora del mediodía solar. Se completaron los 280 municipios desde <code>lugares.py</code>.</dd>
+        <dt>El globo ya funciona en el celular</dt>
+        <dd>Antes el botón solo avisaba «se abre en la app de escritorio». Ahora es un globo en SVG puro — sin librerías, sin red, sin mapas que descargar. Mirando desde tu propio meridiano, el punto subsolar sube y baja por una recta vertical entre los dos trópicos, y <em>tu paso cenital es el instante en que ese punto cruza tu pin</em>.</dd>
+        <dt>El muñeco ahora mide</dt>
+        <dd>El sol se dibujaba con un seno inventado que no dependía ni de la fecha ni de la latitud. Ahora usa la elevación real del motor, así que en el día cenital toca el tope del cielo y en cualquier otro día se queda visiblemente corto. Además hay regla en metros en el suelo, la altura de referencia (1,70 m), la medida pegada a la punta de la sombra y una frase que traduce el número: <em>«tu sombra mide 1,4 veces tu altura»</em>. A 45° dice que la sombra mide exactamente lo que mides tú — comprobado en la verificación.</dd>
+        <dt>Se llama Cenit</dt>
+        <dd>La app nunca decía su propio nombre. Ya está en la barra, y hay una tarjeta que explica qué es el cenit y de dónde viene la palabra.</dd>
+        <dt>Fecha y hora, separadas</dt>
+        <dd>Iban pegadas en una frase corrida y la hora se perdía. Ahora son dos campos con su etiqueta, más una cuenta regresiva al segundo.</dd>
+        <dt>El botón atrás de Android</dt>
+        <dd>Abrir la lista de municipios y tocar atrás sacaba de la app. Ahora la hoja empuja una entrada al historial: atrás sube de municipios a departamentos, y otra vez cierra.</dd>
+        <dt>La primera pantalla es solo la respuesta</dt>
+        <dd>Antes siete bloques competían sin jerarquía y el simulador ya asomaba, robándole atención al dato que la gente vino a buscar. Ahora el lugar y la cuenta regresiva ocupan la pantalla completa, y una pista abajo avisa que el relato sigue.</dd>
+        <dt>Cinco pasos, cero clics de más</dt>
+        <dd>La pantalla se lee en orden: <em>¿cuándo? → ¿cómo se ve? → ¿por qué pasa? → ¿y el resto del año? → ¿algo más?</em> Cada paso hace <em>snap</em> suave al llegar. No es un asistente: no hay nada escondido detrás de un botón, y el scroll libre sigue funcionando igual.</dd>
+        <dt>La curva y las fechas, en la misma tarjeta</dt>
+        <dd>Estaban separadas cuando dicen exactamente lo mismo: los dos puntos que marca la curva <em>son</em> las dos fechas. Juntas, el gráfico se explica solo.</dd>
+        <dt>El tema ya no se pierde en celular</dt>
+        <dd>El botón de claro/oscuro estaba oculto por debajo de 480&nbsp;px, así que en un celular real quedabas atado al tema del sistema. Se mudó a la barra de la app, que es donde corresponde.</dd>
+        <dt>Listo para el notch</dt>
+        <dd>El <code>&lt;meta viewport&gt;</code> declaraba <em>viewport-fit=cover</em> pero nunca se usaban las <em>safe areas</em>: el contenido se metía bajo el notch y bajo la barra de gestos. Ya están aplicadas, con <code>100vh</code> de respaldo para WebViews viejas.</dd>
+        <dt>Sombra proyectada de verdad</dt>
+        <dd>Ya no es una elipse: es la misma silueta del muñeco, deformada contra el suelo con una matriz de proyección. A 45° de altura solar la sombra mide exactamente lo que mide él — el chequeo físico correcto. Se aclara y difumina al alargarse, como en la vida real.</dd>
+        <dt>280 municipios</dt>
+        <dd>Los 32 departamentos y Bogotá D.C., con sus principales municipios por población. Entra por departamento o busca directo por nombre.</dd>
+        <dt>De dónde salen los datos</dt>
+        <dd>Las coordenadas vienen de GeoNames (base pública), no de mi memoria. Las fechas las calculó el motor solar del proyecto, y coinciden con las seis que ya había verificado a mano.</dd>
+        <dt>Departamentos sin relleno</dt>
+        <dd>Guainía aparece con 2 municipios y Vaupés con 4, porque esa es su realidad. Preferí eso a completar diez con veredas.</dd>
+        <dt>La curva explica el fenómeno</dt>
+        <dd>Antes era un degradado bonito que no significaba nada. Ahora es la altura real del sol día por día, calculada con tu latitud: los dos picos que rozan el techo <em>son</em> tus días sin sombra. El gráfico dejó de adornar y pasó a explicar.</dd>
+        <dt>La sombra se transforma</dt>
+        <dd>Al cambiar entre &ldquo;Hoy&rdquo; y &ldquo;Día sin sombra&rdquo; la sombra viaja en 420 ms en vez de saltar. Con <em>reduced-motion</em> activo salta directo, sin animación.</dd>
+        <dt>El sol cambia de color</dt>
+        <dd>Anaranjado cerca del horizonte, casi blanco en lo alto — el mismo detalle que ves al amanecer.</dd>
+      </dl>
+    </aside>
+  </div>
+</div>
+
+<script>
+  // 280 municipios de los 32 departamentos + Bogotá D.C.
+  // Coordenadas: GeoNames. Fechas: calculadas con el motor solar del proyecto.
+  var DEPTOS = /*DATOS*/{"Amazonas":[{"n":"Leticia","lat":-4.2108,"lon":-69.9394,"cap":true},{"n":"Tarapacá","lat":-2.892,"lon":-69.742},{"n":"Puerto Nariño","lat":-3.7889,"lon":-70.3558},{"n":"La Pedrera","lat":-1.3239,"lon":-69.5744},{"n":"La Chorrera","lat":-1.4428,"lon":-72.7893},{"n":"Pacoa","lat":0.0551,"lon":-71.222}],"Antioquia":[{"n":"Medellín","lat":6.245,"lon":-75.5715,"cap":true},{"n":"Bello","lat":6.3373,"lon":-75.558},{"n":"Itagüí","lat":6.1846,"lon":-75.5991},{"n":"Envigado","lat":6.1759,"lon":-75.5917},{"n":"Rionegro","lat":6.1551,"lon":-75.3737},{"n":"Apartadó","lat":7.883,"lon":-76.6259},{"n":"Chigorodó","lat":7.6664,"lon":-76.6811},{"n":"Caldas","lat":6.0911,"lon":-75.6357},{"n":"Caucasia","lat":7.9865,"lon":-75.1935},{"n":"Marinilla","lat":6.1736,"lon":-75.3362}],"Arauca":[{"n":"Arauca","lat":7.0847,"lon":-70.7591,"cap":true},{"n":"Tame","lat":6.4607,"lon":-71.7362},{"n":"Arauquita","lat":7.0292,"lon":-71.4281},{"n":"Cravo Norte","lat":6.3017,"lon":-70.2041},{"n":"Fortul","lat":6.7926,"lon":-71.776},{"n":"Puerto Rondón","lat":6.2805,"lon":-71.1}],"Atlántico":[{"n":"Barranquilla","lat":10.9685,"lon":-74.7813,"cap":true},{"n":"Soledad","lat":10.9184,"lon":-74.7646},{"n":"Malambo","lat":10.8595,"lon":-74.7739},{"n":"Sabanalarga","lat":10.6307,"lon":-74.9221},{"n":"Baranoa","lat":10.7941,"lon":-74.9164},{"n":"Sabanagrande","lat":10.7912,"lon":-74.7606},{"n":"Santo Tomás","lat":10.7577,"lon":-74.7545},{"n":"Luruaco","lat":10.6171,"lon":-75.1515},{"n":"Palmar de Varela","lat":10.7406,"lon":-74.7544},{"n":"Puerto Colombia","lat":10.9878,"lon":-74.9547}],"Bogotá D.C.":[{"n":"Bogotá","lat":4.6097,"lon":-74.0817,"cap":true}],"Bolívar":[{"n":"Cartagena","lat":10.3982,"lon":-75.4933,"cap":true},{"n":"Magangué","lat":9.242,"lon":-74.7547},{"n":"Turbaco","lat":10.3294,"lon":-75.4114},{"n":"Arjona","lat":10.2544,"lon":-75.3439},{"n":"El Carmen de Bolívar","lat":9.7174,"lon":-75.1202},{"n":"San Pablo","lat":10.0515,"lon":-75.2678},{"n":"San Juan Nepomuceno","lat":9.9516,"lon":-75.082},{"n":"Mompós","lat":9.2419,"lon":-74.4267},{"n":"Mahates","lat":10.2329,"lon":-75.1899},{"n":"San Jacinto","lat":9.8277,"lon":-75.1217}],"Boyacá":[{"n":"Tunja","lat":5.5448,"lon":-73.3576,"cap":true},{"n":"Sogamoso","lat":5.7143,"lon":-72.9339},{"n":"Duitama","lat":5.8245,"lon":-73.0341},{"n":"Chiquinquirá","lat":5.6164,"lon":-73.8175},{"n":"Puerto Boyacá","lat":5.976,"lon":-74.5852},{"n":"Moniquirá","lat":5.8764,"lon":-73.5728},{"n":"Paipa","lat":5.7801,"lon":-73.1171},{"n":"Santa Rosa de Viterbo","lat":5.874,"lon":-72.9822},{"n":"Garagoa","lat":5.0824,"lon":-73.3633},{"n":"Soatá","lat":6.3337,"lon":-72.6828}],"Caldas":[{"n":"Manizales","lat":5.0668,"lon":-75.5068,"cap":true},{"n":"La Dorada","lat":5.4478,"lon":-74.6631},{"n":"Chinchiná","lat":4.9825,"lon":-75.6036},{"n":"Villamaría","lat":5.0457,"lon":-75.5147},{"n":"Supía","lat":5.453,"lon":-75.6507},{"n":"Aguadas","lat":5.6116,"lon":-75.4562},{"n":"Neira","lat":5.1665,"lon":-75.52},{"n":"Riosucio","lat":5.4216,"lon":-75.7032},{"n":"Salamina","lat":5.4073,"lon":-75.4875},{"n":"Manzanares","lat":5.254,"lon":-75.154}],"Caquetá":[{"n":"Florencia","lat":1.6155,"lon":-75.6041,"cap":true},{"n":"Puerto Rico","lat":1.91,"lon":-75.1593},{"n":"El Doncello","lat":1.6782,"lon":-75.2847},{"n":"Solano","lat":0.6994,"lon":-75.2535},{"n":"Curillo","lat":1.0333,"lon":-75.9191},{"n":"El Paujíl","lat":1.5701,"lon":-75.3286},{"n":"Cartagena del Chairá","lat":1.3349,"lon":-74.8429},{"n":"Milán","lat":1.2903,"lon":-75.5076},{"n":"Valparaíso","lat":1.194,"lon":-75.7075},{"n":"Albania","lat":1.3287,"lon":-75.8782}],"Casanare":[{"n":"Yopal","lat":5.3357,"lon":-72.3939,"cap":true},{"n":"Paz de Ariporo","lat":5.8815,"lon":-71.8917},{"n":"Villanueva","lat":5.2833,"lon":-71.9667},{"n":"Tauramena","lat":5.0179,"lon":-72.7468},{"n":"Aguazul","lat":5.1728,"lon":-72.5471},{"n":"Monterrey","lat":4.878,"lon":-72.8958},{"n":"Maní","lat":4.8164,"lon":-72.2795},{"n":"Trinidad","lat":5.4085,"lon":-71.662},{"n":"Municipio Hato Corozal","lat":6.1568,"lon":-71.7637},{"n":"Pore","lat":5.7279,"lon":-71.9927}],"Cauca":[{"n":"Popayán","lat":2.4382,"lon":-76.6132,"cap":true},{"n":"Santander de Quilichao","lat":3.0095,"lon":-76.4849},{"n":"Puerto Tejada","lat":3.2311,"lon":-76.4167},{"n":"Piendamo","lat":2.6392,"lon":-76.5306},{"n":"Miranda","lat":3.2528,"lon":-76.2292},{"n":"Patía","lat":2.069,"lon":-77.0527},{"n":"Belalcázar","lat":2.6464,"lon":-75.9727},{"n":"Corinto","lat":3.173,"lon":-76.2627},{"n":"Morales","lat":2.7545,"lon":-76.6279},{"n":"Timbiquí","lat":2.7717,"lon":-77.6654}],"Cesar":[{"n":"Valledupar","lat":10.4654,"lon":-73.2531,"cap":true},{"n":"Aguachica","lat":8.3084,"lon":-73.6166},{"n":"Agustín Codazzi","lat":10.0367,"lon":-73.2356},{"n":"Bosconia","lat":9.9711,"lon":-73.8882},{"n":"Curumaní","lat":9.1999,"lon":-73.5427},{"n":"Chimichagua","lat":9.2578,"lon":-73.8123},{"n":"El Copey","lat":10.1503,"lon":-73.9614},{"n":"Chiriguaná","lat":9.3624,"lon":-73.6031},{"n":"Ariguaní","lat":10.25,"lon":-74.0},{"n":"La Jagua de Ibirico","lat":9.5623,"lon":-73.3341}],"Chocó":[{"n":"Quibdó","lat":5.6919,"lon":-76.6583,"cap":true},{"n":"Pizarro","lat":4.9533,"lon":-77.366},{"n":"Tadó","lat":5.266,"lon":-76.5649},{"n":"Istmina","lat":5.1605,"lon":-76.684},{"n":"Unguía","lat":8.0436,"lon":-77.0914},{"n":"Condoto","lat":5.0935,"lon":-76.6497},{"n":"Bahía Solano","lat":6.2262,"lon":-77.4044},{"n":"Riosucio","lat":7.4435,"lon":-77.1196},{"n":"Acandí","lat":8.5116,"lon":-77.2772},{"n":"Bagadó","lat":5.4116,"lon":-76.4152}],"Cundinamarca":[{"n":"Soacha","lat":4.5794,"lon":-74.2168},{"n":"Facatativá","lat":4.8137,"lon":-74.3545},{"n":"Madrid","lat":4.7325,"lon":-74.2642},{"n":"Zipaquirá","lat":5.0221,"lon":-74.0048},{"n":"Mosquera","lat":4.7059,"lon":-74.2302},{"n":"Chía","lat":4.8588,"lon":-74.0587},{"n":"Funza","lat":4.7164,"lon":-74.212},{"n":"Girardot City","lat":4.3008,"lon":-74.8075},{"n":"Fusagasugá","lat":4.3365,"lon":-74.3638},{"n":"Cajicá","lat":4.9186,"lon":-74.028}],"Córdoba":[{"n":"Montería","lat":8.7508,"lon":-75.8782,"cap":true},{"n":"Cereté","lat":8.8848,"lon":-75.7905},{"n":"Montelíbano","lat":7.9792,"lon":-75.4202},{"n":"Planeta Rica","lat":8.4115,"lon":-75.5851},{"n":"Sahagún","lat":8.9462,"lon":-75.4428},{"n":"Ayapel","lat":8.3137,"lon":-75.1398},{"n":"Chinú","lat":9.1057,"lon":-75.3981},{"n":"Lorica","lat":9.2365,"lon":-75.8135},{"n":"San Antero","lat":9.3741,"lon":-75.7589},{"n":"Tierralta","lat":8.1736,"lon":-76.0592}],"Guainía":[{"n":"Inírida","lat":3.8653,"lon":-67.9239,"cap":true},{"n":"San Felipe","lat":1.9141,"lon":-67.07}],"Guaviare":[{"n":"San José del Guaviare","lat":2.568,"lon":-72.6397,"cap":true},{"n":"El Retorno","lat":2.3302,"lon":-72.6277},{"n":"Miraflores","lat":1.3367,"lon":-71.9511},{"n":"Calamar","lat":1.9596,"lon":-72.6531}],"Huila":[{"n":"Neiva","lat":2.93,"lon":-75.2797,"cap":true},{"n":"Pitalito","lat":1.8537,"lon":-76.0507},{"n":"Gigante","lat":2.3868,"lon":-75.5474},{"n":"Garzón","lat":2.1959,"lon":-75.6278},{"n":"Isnos","lat":1.9356,"lon":-76.2406},{"n":"Rivera","lat":2.7772,"lon":-75.2564},{"n":"Campoalegre","lat":2.6849,"lon":-75.3231},{"n":"La Plata","lat":2.3934,"lon":-75.8923},{"n":"Tarqui","lat":2.1125,"lon":-75.8242},{"n":"Guadalupe","lat":2.0248,"lon":-75.7559}],"La Guajira":[{"n":"Riohacha","lat":11.5444,"lon":-72.9072,"cap":true},{"n":"Maicao","lat":11.3784,"lon":-72.2395},{"n":"San Juan del Cesar","lat":10.7711,"lon":-73.0031},{"n":"Barrancas","lat":10.9567,"lon":-72.7946},{"n":"Fonseca","lat":10.8861,"lon":-72.8487},{"n":"Albania","lat":11.161,"lon":-72.5924},{"n":"Hatonuevo","lat":11.0694,"lon":-72.7669},{"n":"Villanueva","lat":10.6077,"lon":-72.979},{"n":"Distracción","lat":10.8978,"lon":-72.8867},{"n":"Manaure","lat":11.7751,"lon":-72.4445}],"Magdalena":[{"n":"Santa Marta","lat":11.2386,"lon":-74.1943,"cap":true},{"n":"Ciénaga","lat":11.007,"lon":-74.2476},{"n":"Fundación","lat":10.5207,"lon":-74.185},{"n":"El Banco","lat":9.0011,"lon":-73.9758},{"n":"Plato","lat":9.7903,"lon":-74.7824},{"n":"Aracataca","lat":10.5918,"lon":-74.1898},{"n":"Puebloviejo","lat":10.9938,"lon":-74.2844},{"n":"Sitionuevo","lat":10.7774,"lon":-74.7205},{"n":"Pivijay","lat":10.4617,"lon":-74.6162},{"n":"Guamal","lat":9.1433,"lon":-74.2238}],"Meta":[{"n":"Villavicencio","lat":4.1324,"lon":-73.6256,"cap":true},{"n":"Granada","lat":3.5463,"lon":-73.7069},{"n":"Acacías","lat":3.987,"lon":-73.758},{"n":"San Martín","lat":3.6964,"lon":-73.6996},{"n":"Restrepo","lat":4.2583,"lon":-73.5614},{"n":"Puerto López","lat":4.0991,"lon":-72.9565},{"n":"Guamal","lat":3.8804,"lon":-73.7657},{"n":"San Carlos de Guaroa","lat":3.7116,"lon":-73.2434},{"n":"Cumaral","lat":4.2708,"lon":-73.4867},{"n":"Lejanías","lat":3.5276,"lon":-74.0233}],"Nariño":[{"n":"Pasto","lat":1.2146,"lon":-77.2785,"cap":true},{"n":"Tumaco","lat":1.7911,"lon":-78.7927},{"n":"Ipiales","lat":0.825,"lon":-77.6397},{"n":"Samaniego","lat":1.3385,"lon":-77.5957},{"n":"Túquerres","lat":1.0865,"lon":-77.6186},{"n":"El Charco","lat":2.4808,"lon":-78.1097},{"n":"Buesaco","lat":1.3836,"lon":-77.1562},{"n":"San Lorenzo","lat":1.5029,"lon":-77.2154},{"n":"Pupiales","lat":0.8714,"lon":-77.6403},{"n":"La Unión","lat":1.6045,"lon":-77.1315}],"Norte de Santander":[{"n":"Cúcuta","lat":7.9074,"lon":-72.5049,"cap":true},{"n":"Ocaña","lat":8.2377,"lon":-73.356},{"n":"Villa del Rosario","lat":7.8339,"lon":-72.4742},{"n":"Los Patios","lat":7.8379,"lon":-72.5037},{"n":"Pamplona","lat":7.3757,"lon":-72.6479},{"n":"El Zulia","lat":7.9325,"lon":-72.6012},{"n":"Puerto Santander","lat":8.3636,"lon":-72.4063},{"n":"Tibú","lat":8.6389,"lon":-72.7358},{"n":"El Carmen","lat":8.5112,"lon":-73.4476},{"n":"Abrego","lat":8.082,"lon":-73.2214}],"Putumayo":[{"n":"Mocoa","lat":1.1528,"lon":-76.6521,"cap":true},{"n":"Orito","lat":0.6675,"lon":-76.873},{"n":"Puerto Asís","lat":0.5051,"lon":-76.4957},{"n":"Puerto Leguízamo","lat":-0.1934,"lon":-74.7819},{"n":"Valle del Guamuez","lat":0.4525,"lon":-76.9192},{"n":"Sibundoy","lat":1.203,"lon":-76.9227},{"n":"La Dorada","lat":0.3431,"lon":-76.9112},{"n":"Villagarzón","lat":1.0375,"lon":-76.6267},{"n":"Santiago","lat":1.1484,"lon":-77.0045},{"n":"San Francisco","lat":1.1764,"lon":-76.8784}],"Quindío":[{"n":"Armenia","lat":4.5366,"lon":-75.6726,"cap":true},{"n":"Calarcá","lat":4.5295,"lon":-75.6409},{"n":"Montenegro","lat":4.5664,"lon":-75.7511},{"n":"Quimbaya","lat":4.6231,"lon":-75.7628},{"n":"Circasia","lat":4.6189,"lon":-75.6358},{"n":"La Tebaida","lat":4.4527,"lon":-75.7875},{"n":"Génova","lat":4.3167,"lon":-75.7667},{"n":"Filandia","lat":4.6747,"lon":-75.6583},{"n":"Pijao","lat":4.3335,"lon":-75.7046},{"n":"Salento","lat":4.6375,"lon":-75.5703}],"Risaralda":[{"n":"Pereira","lat":4.8143,"lon":-75.6949,"cap":true},{"n":"Dosquebradas","lat":4.8392,"lon":-75.6673},{"n":"Santa Rosa de Cabal","lat":4.8681,"lon":-75.6214},{"n":"Quinchía","lat":5.3396,"lon":-75.7302},{"n":"Anserma","lat":5.3328,"lon":-75.7911},{"n":"La Virginia","lat":4.8997,"lon":-75.8825},{"n":"Belén de Umbría","lat":5.2009,"lon":-75.8687},{"n":"Marsella","lat":4.9372,"lon":-75.7378},{"n":"Pueblo Rico","lat":5.2226,"lon":-76.0303},{"n":"Santuario","lat":5.0742,"lon":-75.9642}],"San Andrés y Providencia":[{"n":"San Andrés","lat":12.5786,"lon":-81.6997,"cap":true},{"n":"The Mountain","lat":13.3743,"lon":-81.3614}],"Santander":[{"n":"Bucaramanga","lat":7.125,"lon":-73.1189,"cap":true},{"n":"Floridablanca","lat":7.0622,"lon":-73.0864},{"n":"Barrancabermeja","lat":7.0653,"lon":-73.8547},{"n":"Piedecuesta","lat":6.9879,"lon":-73.0495},{"n":"Girón","lat":7.0682,"lon":-73.1698},{"n":"Cimitarra","lat":6.3142,"lon":-73.9497},{"n":"San Gil","lat":6.5595,"lon":-73.1364},{"n":"Puerto Wilches","lat":7.3483,"lon":-73.896},{"n":"Socorro","lat":6.4684,"lon":-73.2602},{"n":"Sabana de Torres","lat":7.3915,"lon":-73.4957}],"Sucre":[{"n":"Sincelejo","lat":9.3045,"lon":-75.3905,"cap":true},{"n":"San Marcos","lat":8.6597,"lon":-75.1281},{"n":"Corozal","lat":9.3185,"lon":-75.2933},{"n":"San Onofre","lat":9.7359,"lon":-75.5263},{"n":"San Luis de Sincé","lat":9.2439,"lon":-75.1467},{"n":"Santiago de Tolú","lat":9.5239,"lon":-75.5814},{"n":"Sucre","lat":8.8114,"lon":-74.7208},{"n":"Sampués","lat":9.1836,"lon":-75.3817},{"n":"Galeras","lat":9.1609,"lon":-75.0481},{"n":"Tolú Viejo","lat":9.4508,"lon":-75.4386}],"Tolima":[{"n":"Ibagué","lat":4.4357,"lon":-75.2029,"cap":true},{"n":"Espinal","lat":4.1492,"lon":-74.8843},{"n":"Líbano","lat":4.9218,"lon":-75.0623},{"n":"Payandé","lat":4.2975,"lon":-75.0967},{"n":"San Sebastián de Mariquita","lat":5.1989,"lon":-74.8929},{"n":"Guamo","lat":4.0308,"lon":-74.9701},{"n":"Purificación","lat":3.8587,"lon":-74.9313},{"n":"Flandes","lat":4.29,"lon":-74.8161},{"n":"Honda","lat":5.2086,"lon":-74.7358},{"n":"Melgar","lat":4.2047,"lon":-74.6407}],"Valle del Cauca":[{"n":"Cali","lat":3.4305,"lon":-76.5199,"cap":true},{"n":"Buenaventura","lat":3.5833,"lon":-77.0},{"n":"Palmira","lat":3.5394,"lon":-76.3036},{"n":"Tuluá","lat":4.0847,"lon":-76.1954},{"n":"Cartago","lat":4.7464,"lon":-75.9117},{"n":"Guadalajara de Buga","lat":3.9009,"lon":-76.2978},{"n":"Yumbo","lat":3.5823,"lon":-76.4915},{"n":"Florida","lat":3.3223,"lon":-76.2348},{"n":"Jamundí","lat":3.2607,"lon":-76.535},{"n":"Pradera","lat":3.4211,"lon":-76.2447},{"n":"San Pedro","lat":3.9945,"lon":-76.2288}],"Vaupés":[{"n":"Mitú","lat":1.2574,"lon":-70.2355,"cap":true},{"n":"Acaricuara","lat":0.6832,"lon":-70.2423},{"n":"Taraira","lat":-0.5636,"lon":-69.6336},{"n":"Yavaraté","lat":0.615,"lon":-69.2081}],"Vichada":[{"n":"Puerto Carreño","lat":6.1904,"lon":-67.4839,"cap":true},{"n":"Cumaribo","lat":4.4455,"lon":-69.799},{"n":"La Primavera","lat":5.4906,"lon":-70.4092},{"n":"Santa Rosalia","lat":5.1336,"lon":-70.8623}]}/*FIN*/;
+
+  var MESES = ['ene','feb','mar','abr','may','jun','jul','ago','sep','oct','nov','dic'];
+  var MESES_LARGO = ['enero','febrero','marzo','abril','mayo','junio','julio',
+                     'agosto','septiembre','octubre','noviembre','diciembre'];
+
+  /* =====================================================================
+     MOTOR SOLAR — puerto directo de solar.py y zenith.py
+     ---------------------------------------------------------------------
+     Algoritmo NOAA / Meeus. Precisión típica: declinación ~0.01°,
+     ecuación del tiempo ~pocos segundos.
+
+     Antes las fechas venían precocinadas para 2026 dentro del HTML: en
+     2027 ya se corrían hasta un día entero, y para una app cuyo único
+     trabajo es decirte QUÉ DÍA salir, un día de error es todo el error
+     posible. Ahora todo se calcula en el dispositivo a partir de la
+     latitud y la longitud, así que la app no caduca nunca y funciona sin
+     conexión.
+     ===================================================================== */
+
+  var RAD = Math.PI / 180;
+  var TZ_COL = -5;               // Colombia no usa horario de verano
+  var LIMITE_TROPICO = 23.437;   // más allá de esta latitud el sol nunca llega al cenit
+  var MS_DIA = 86400000;
+
+  // Época Unix = día juliano 2440587.5
+  function diaJuliano(ms) { return ms / MS_DIA + 2440587.5; }
+
+  // Devuelve {decl: grados, eot: minutos}
+  function posicionSolar(jd) {
+    var t = (jd - 2451545.0) / 36525.0;
+    var l0 = (280.46646 + t * (36000.76983 + t * 0.0003032)) % 360;
+    var m = 357.52911 + t * (35999.05029 - 0.0001537 * t);
+    var mr = m * RAD;
+    var e = 0.016708634 - t * (0.000042037 + 0.0000001267 * t);
+
+    var c = (1.914602 - t * (0.004817 + 0.000014 * t)) * Math.sin(mr)
+          + (0.019993 - 0.000101 * t) * Math.sin(2 * mr)
+          + 0.000289 * Math.sin(3 * mr);
+
+    var omega = 125.04 - 1934.136 * t;
+    var aparente = l0 + c - 0.00569 - 0.00478 * Math.sin(omega * RAD);
+
+    var eps0 = 23 + (26 + (21.448 - t * (46.815 + t * (0.00059 - t * 0.001813))) / 60) / 60;
+    var eps = eps0 + 0.00256 * Math.cos(omega * RAD);
+
+    var decl = Math.asin(Math.sin(eps * RAD) * Math.sin(aparente * RAD)) / RAD;
+
+    var y = Math.pow(Math.tan(eps * RAD / 2), 2);
+    var l0r = l0 * RAD;
+    var eot = 4 * (y * Math.sin(2 * l0r)
+                 - 2 * e * Math.sin(mr)
+                 + 4 * e * y * Math.sin(mr) * Math.cos(2 * l0r)
+                 - 0.5 * y * y * Math.sin(4 * l0r)
+                 - 1.25 * e * e * Math.sin(2 * mr)) / RAD;
+
+    return { decl: decl, eot: eot };
+  }
+
+  // Instante UTC (ms) en que el sol cruza el meridiano del lugar
+  function mediodiaSolar(anio, mes, dia, lon) {
+    var medianoche = Date.UTC(anio, mes, dia);
+    var eot = posicionSolar(diaJuliano(medianoche + 12 * 3600000)).eot;
+    return medianoche + (720 - 4 * lon - eot) * 60000;
+  }
+
+  function declinacionEnMediodia(anio, mes, dia, lon) {
+    return posicionSolar(diaJuliano(mediodiaSolar(anio, mes, dia, lon))).decl;
+  }
+
+  function elevacionSolar(ms, lat, lon) {
+    var p = posicionSolar(diaJuliano(ms));
+    var d = new Date(ms);
+    var minutosUTC = d.getUTCHours() * 60 + d.getUTCMinutes() + d.getUTCSeconds() / 60;
+    var horaSolar = minutosUTC + 4 * lon + p.eot;
+    var angulo = (horaSolar / 4 - 180) * RAD;
+    return Math.asin(Math.sin(lat * RAD) * Math.sin(p.decl * RAD)
+         + Math.cos(lat * RAD) * Math.cos(p.decl * RAD) * Math.cos(angulo)) / RAD;
+  }
+
+  /* Pasos cenitales del año: los días en que la declinación solar al
+     mediodía local iguala la latitud del lugar. Mismo método que
+     zenith.py, para que escritorio y móvil den exactamente lo mismo. */
+  function pasosCenitales(lat, lon, anio) {
+    if (Math.abs(lat) > LIMITE_TROPICO) return [];
+
+    var dias = Math.round((Date.UTC(anio + 1, 0, 1) - Date.UTC(anio, 0, 1)) / MS_DIA);
+    var difs = [];
+    for (var i = 0; i <= dias; i++) {
+      var f = new Date(Date.UTC(anio, 0, 1 + i));
+      difs.push(declinacionEnMediodia(f.getUTCFullYear(), f.getUTCMonth(), f.getUTCDate(), lon) - lat);
+    }
+
+    var pasos = [];
+    for (var j = 0; j < difs.length - 1; j++) {
+      var d0 = difs[j], d1 = difs[j + 1], k = null;
+      // Nos quedamos con el día en que el sol pasa más cerca del cenit.
+      // Comparar |d0| con |d1| en vez de redondear evita depender del modo de
+      // redondeo, que difiere entre Python y JS y en un empate exacto daba
+      // días distintos en cada plataforma.
+      if (d0 === 0) k = j;
+      else if (d0 * d1 < 0) k = (Math.abs(d0) <= Math.abs(d1)) ? j : j + 1;
+      if (k === null) continue;
+      var g = new Date(Date.UTC(anio, 0, 1 + k));
+      pasos.push(mediodiaSolar(g.getUTCFullYear(), g.getUTCMonth(), g.getUTCDate(), lon));
+    }
+    return pasos;
+  }
+
+  /* ---- hora de Colombia, sin depender del reloj del teléfono ----------
+     El celular puede estar en otra zona horaria (o el usuario de viaje).
+     Corremos el instante UTC 5 horas y leemos los campos UTC: así siempre
+     razonamos en hora colombiana. */
+  function enHoraColombia(ms) {
+    var d = new Date(ms + TZ_COL * 3600000);
+    return {
+      anio: d.getUTCFullYear(), mes: d.getUTCMonth(), dia: d.getUTCDate(),
+      hora: d.getUTCHours(), min: d.getUTCMinutes(), seg: d.getUTCSeconds()
+    };
+  }
+
+  function diaDelAnioCol(ms) {
+    var c = enHoraColombia(ms);
+    return Math.round((Date.UTC(c.anio, c.mes, c.dia) - Date.UTC(c.anio, 0, 0)) / MS_DIA);
+  }
+
+  function diasDelAnio(anio) {
+    return Math.round((Date.UTC(anio + 1, 0, 1) - Date.UTC(anio, 0, 1)) / MS_DIA);
+  }
+
+  /* Todo lo que la pantalla necesita de un lugar, calculado una sola vez
+     y guardado en caché mientras no cambie el año. */
+  function datosDe(lugar) {
+    var ahora = Date.now();
+    var anio = enHoraColombia(ahora).anio;
+    if (lugar._cache && lugar._cache.anio === anio) return lugar._cache;
+
+    var delAnio = pasosCenitales(lugar.lat, lugar.lon, anio);
+    var proximo = null, cual = 0;
+
+    for (var i = 0; i < delAnio.length; i++) {
+      if (delAnio[i] > ahora) { proximo = delAnio[i]; cual = i + 1; break; }
+    }
+    if (proximo === null) {
+      var siguiente = pasosCenitales(lugar.lat, lugar.lon, anio + 1);
+      if (siguiente.length) { proximo = siguiente[0]; cual = 1; }
+    }
+
+    lugar._cache = { anio: anio, delAnio: delAnio, proximo: proximo, cual: cual };
+    return lugar._cache;
+  }
+
+  // Lista plana con el departamento pegado a cada municipio
+  var TODOS = [];
+  Object.keys(DEPTOS).forEach(function (depto) {
+    DEPTOS[depto].forEach(function (m) {
+      m.depto = depto;
+      TODOS.push(m);
+    });
+  });
+
+  var lugarActual = DEPTOS['Bogotá D.C.'][0];
+  var modoDia = 'cenit';
+  var textoBusqueda = '';
+  var deptoAbierto = null;
+  var yaDeslizo = false;
+
+  function ripple(e) {
+    var el = e.currentTarget;
+    var rect = el.getBoundingClientRect();
+    var size = Math.max(rect.width, rect.height);
+    var span = document.createElement('span');
+    span.className = 'ripple';
+    span.style.width = span.style.height = size + 'px';
+    span.style.left = (e.clientX - rect.left - size / 2) + 'px';
+    span.style.top = (e.clientY - rect.top - size / 2) + 'px';
+    el.appendChild(span);
+    span.addEventListener('animationend', function () { span.remove(); });
+  }
+
+  function toggleTheme() {
+    var root = document.documentElement;
+    var dark = root.getAttribute('data-theme') === 'dark';
+    root.setAttribute('data-theme', dark ? 'light' : 'dark');
+    sincronizarBarraEstado();
+  }
+
+  /* La barra de estado de Android se pinta con <meta name="theme-color">.
+     Los dos <meta> del <head> solo reaccionan al tema del SISTEMA, así que
+     al cambiar el tema a mano hay que escribirlo: si no, queda una franja
+     blanca sobre una app oscura. */
+  function sincronizarBarraEstado() {
+    var forzado = document.documentElement.getAttribute('data-theme');
+    var oscuro = forzado
+      ? forzado === 'dark'
+      : (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches);
+    var meta = document.getElementById('metaTema');
+    if (meta) meta.setAttribute('content', oscuro ? '#202124' : '#ffffff');
+  }
+
+  function onScroll(el) {
+    document.getElementById('appBar').classList.toggle('scrolled', el.scrollTop > 4);
+    document.getElementById('scrollCue').classList.toggle('hide', el.scrollTop > 12);
+  }
+
+  function avisar(msg) {
+    var bar = document.getElementById('snackbar');
+    bar.textContent = msg;
+    bar.classList.add('show');
+    clearTimeout(bar._t);
+    bar._t = setTimeout(function () { bar.classList.remove('show'); }, 2600);
+  }
+
+  var sinMovimiento = window.matchMedia &&
+      window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  /* mezcla: 0 = hoy, 1 = el día del paso cenital. Se anima al cambiar de chip
+     para que la sombra viaje en vez de saltar. */
+  var mezcla = 1;
+  var animacion = null;
+
+  function diaHoy() {
+    var c = enHoraColombia(Date.now());
+    return { anio: c.anio, mes: c.mes, dia: c.dia };
+  }
+
+  function diaCenital() {
+    var p = datosDe(lugarActual).proximo;
+    if (p === null) return diaHoy();
+    var c = enHoraColombia(p);
+    return { anio: c.anio, mes: c.mes, dia: c.dia };
+  }
+
+  /* Elevación REAL del sol a esa hora local de Colombia, con el motor NOAA.
+     Antes era `elevMax * sin(pi*t)`, una curva inventada que no correspondía
+     ni a la latitud ni a la fecha. */
+  function elevacionEn(dia, minutos) {
+    var ms = Date.UTC(dia.anio, dia.mes, dia.dia) + minutos * 60000 - TZ_COL * 3600000;
+    return elevacionSolar(ms, lugarActual.lat, lugarActual.lon);
+  }
+
+  function animarHacia(destino) {
+    if (animacion) cancelAnimationFrame(animacion);
+    var desde = mezcla;
+    var pinta = function () { dibujarEscena(Number(document.getElementById('slider').value)); };
+    if (sinMovimiento || Math.abs(destino - desde) < 0.01) {
+      mezcla = destino; pinta(); return;
+    }
+    var t0 = performance.now(), dur = 420;
+    (function paso(ahora) {
+      var t = Math.min(1, (ahora - t0) / dur);
+      var suave = t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+      mezcla = desde + (destino - desde) * suave;
+      pinta();
+      if (t < 1) animacion = requestAnimationFrame(paso);
+    })(t0);
+  }
+
+  // ---- simulador de sombra ----
+  function onSlide(minutos) {
+    if (!yaDeslizo) {
+      yaDeslizo = true;
+      document.getElementById('dragHint').classList.add('hide');
+    }
+    dibujarEscena(Number(minutos));
+  }
+
+  var ALTO_PX = 52;               // altura del muñeco en el dibujo = 1,70 m
+  var ALTO_M = 1.70;
+  var PX_METRO = ALTO_PX / ALTO_M;
+  var SUELO_Y = 152;              // línea donde tiene los pies
+  var LARGO_MAX = 165;            // recorte del dibujo, no del cálculo
+
+  // La regla del suelo: una marca por metro a cada lado de los pies
+  function dibujarRegla() {
+    var g = document.getElementById('regla');
+    while (g.firstChild) g.removeChild(g.firstChild);
+    for (var k = 1; k <= 5; k++) {
+      var dx = k * PX_METRO;
+      [160 - dx, 160 + dx].forEach(function (x) {
+        if (x < 4 || x > 316) return;
+        var l = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+        l.setAttribute('x1', x.toFixed(1)); l.setAttribute('x2', x.toFixed(1));
+        l.setAttribute('y1', SUELO_Y);      l.setAttribute('y2', k === 1 ? 160 : 157);
+        g.appendChild(l);
+      });
+    }
+  }
+
+  function formatearLargo(metros) {
+    if (metros === null) return '—';
+    if (metros < 0.005) return '0 cm';
+    if (metros < 1) return Math.round(metros * 100) + ' cm';
+    if (metros > 20) return '+20 m';
+    return metros.toFixed(2).replace('.', ',') + ' m';
+  }
+
+  function dibujarEscena(minutos) {
+    var p = (minutos - 360) / 720;      // 0 = 6 a.m., 1 = 6 p.m.
+
+    // Elevación real, interpolando entre el día de hoy y el del paso cenital
+    var eHoy = elevacionEn(diaHoy(), minutos);
+    var eCen = elevacionEn(diaCenital(), minutos);
+    var elev = eHoy + (eCen - eHoy) * mezcla;
+
+    // El sol se dibuja a su altura real: en el día cenital toca el tope del
+    // cielo al mediodía, y en cualquier otro día se queda visiblemente corto.
+    var aSunX = function (q) { return 20 + 280 * q; };
+    var aSunY = function (e) { return 146 - 128 * Math.max(0, e) / 90; };
+    var sunX = aSunX(p);
+    var sunY = aSunY(elev);
+
+    /* El recorrido del sol ese día, con la misma mezcla que la posición.
+       En el día cenital el trazo hace una cúspide en punta en vez de una
+       curva suave, y está bien: cerca de los 90° la elevación cambia casi
+       linealmente con el tiempo (la asin tiene derivada infinita ahí). En
+       un día cualquiera se ve como el arco redondeado de siempre. */
+    var trazo = [];
+    for (var mm = 360; mm <= 1080; mm += 10) {
+      var e0 = elevacionEn(diaHoy(), mm);
+      var e1 = elevacionEn(diaCenital(), mm);
+      var ee = e0 + (e1 - e0) * mezcla;
+      if (ee < 0) continue;
+      trazo.push(aSunX((mm - 360) / 720).toFixed(1) + ',' + aSunY(ee).toFixed(1));
+    }
+    document.getElementById('arco').setAttribute(
+      'd', trazo.length > 1 ? 'M' + trazo.join('L') : '');
+    var sol = document.getElementById('sun');
+    sol.setAttribute('cx', sunX.toFixed(1));
+    sol.setAttribute('cy', sunY.toFixed(1));
+    document.getElementById('sunGlow').setAttribute('cx', sunX.toFixed(1));
+    document.getElementById('sunGlow').setAttribute('cy', sunY.toFixed(1));
+
+    // cerca del horizonte el sol se ve anaranjado, arriba casi blanco
+    var altura = Math.max(0, Math.min(1, elev / 55));
+    sol.setAttribute('fill', altura > 0.99 ? '#fdd663'
+      : 'rgb(' + Math.round(251 - 3 * altura) + ','
+               + Math.round(140 + 74 * altura) + ','
+               + Math.round(20 + 79 * altura) + ')');
+
+    var visible = elev > 0.6;
+    var metros = visible ? ALTO_M / Math.tan(elev * Math.PI / 180) : null;
+    var largoPx = Math.min(visible ? metros * PX_METRO : 9999, LARGO_MAX);
+    var dir = sunX <= 160 ? 1 : -1;   // el sol a la izquierda tira la sombra a la derecha
+
+    // Proyectamos la silueta contra el suelo: la altura se convierte en
+    // largo horizontal, y lo que queda de vertical se aplasta (perspectiva).
+    var aplaste = -0.16;   // negativo = la sombra cae hacia el frente, sobre el suelo
+    var sesgo = -dir * (largoPx / ALTO_PX);
+    var sombra = document.getElementById('shadow');
+    sombra.setAttribute('transform',
+      'matrix(1,0,' + sesgo.toFixed(4) + ',' + aplaste + ',160,' + SUELO_Y + ')');
+
+    // sombra larga = más difusa y clara, como en la vida real
+    var opacidad = visible ? Math.max(0.14, 0.5 - (largoPx / LARGO_MAX) * 0.3) : 0;
+    sombra.setAttribute('opacity', opacidad.toFixed(3));
+
+    // La medida, pegada a la punta de la sombra
+    var tip = document.getElementById('tipLbl');
+    if (visible && metros < 12) {
+      tip.setAttribute('x', Math.max(18, Math.min(302, 160 + dir * largoPx)).toFixed(1));
+      tip.setAttribute('y', 172);
+      tip.textContent = formatearLargo(metros);
+    } else {
+      tip.textContent = '';
+    }
+
+    document.getElementById('lenOut').textContent = formatearLargo(metros);
+    document.getElementById('elevOut').textContent =
+      visible ? Math.round(elev) + '°' : '—';
+
+    var h = Math.floor(minutos / 60), m = minutos % 60;
+    var suf = h >= 12 ? 'p.m.' : 'a.m.';
+    var h12 = h % 12 === 0 ? 12 : h % 12;
+    document.getElementById('timeOut').textContent =
+      h12 + ':' + String(m).padStart(2, '0') + ' ' + suf;
+
+    // La frase que convierte el número en algo que se entiende
+    var nota = document.getElementById('roNote');
+    var razon = visible ? metros / ALTO_M : null;
+    if (!visible) {
+      nota.innerHTML = 'El sol está bajo el horizonte: no hay sombra que medir.';
+    } else if (elev > 89.4) {
+      nota.innerHTML = '<strong>Tu sombra desapareció.</strong> El sol está justo encima de tu cabeza: es el paso cenital.';
+    } else if (Math.abs(elev - 45) < 0.6) {
+      nota.innerHTML = 'El sol está a <strong>45°</strong>: tu sombra mide exactamente lo que mides tú.';
+    } else if (razon < 0.1) {
+      nota.innerHTML = 'Tu sombra es apenas <strong>' + Math.round(razon * 100) + '%</strong> de tu altura. Falta poquito.';
+    } else {
+      nota.innerHTML = 'Tu sombra mide <strong>' + razon.toFixed(1).replace('.', ',') +
+                       ' veces</strong> tu altura.';
+    }
+  }
+
+  function setDia(modo) {
+    modoDia = modo;
+    document.getElementById('chipHoy').classList.toggle('on', modo === 'hoy');
+    document.getElementById('chipCenit').classList.toggle('on', modo === 'cenit');
+    animarHacia(modo === 'cenit' ? 1 : 0);
+  }
+
+  // ---- lugar ----
+  var conteo = null;
+
+  /* El número grande tiene dos escritores: esta animación y el tic de cada
+     segundo. Sin la bandera se pisan, y la pantalla llega a mostrar un
+     titular que no concuerda con la cuenta de abajo. */
+  var animandoTitular = false;
+
+  function contarHasta(el, destino) {
+    var desde = parseInt(el.textContent, 10);
+    if (conteo) cancelAnimationFrame(conteo);
+    if (sinMovimiento || isNaN(desde) || desde === destino) {
+      animandoTitular = false;
+      el.textContent = destino;
+      return;
+    }
+    animandoTitular = true;
+    var t0 = performance.now(), dur = 500;
+
+    var rematar = function () {
+      if (conteo) cancelAnimationFrame(conteo);
+      animandoTitular = false;
+      el.textContent = destino;
+    };
+
+    /* Red de seguridad: si requestAnimationFrame no llega a correr —pestaña
+       en segundo plano, animaciones limitadas por ahorro de batería— el
+       número se quedaría congelado a medio camino y la bandera bloquearía
+       para siempre la corrección del tic. La corrección visual es opcional;
+       que el dato sea correcto no lo es. */
+    clearTimeout(el._red);
+    el._red = setTimeout(rematar, dur + 200);
+
+    (function paso(ahora) {
+      var t = Math.min(1, (ahora - t0) / dur);
+      var suave = 1 - Math.pow(1 - t, 3);
+      el.textContent = Math.round(desde + (destino - desde) * suave);
+      if (t < 1) { conteo = requestAnimationFrame(paso); }
+      else { clearTimeout(el._red); rematar(); }
+    })(t0);
+  }
+
+  function hora12(ms) {
+    var c = enHoraColombia(ms);
+    var suf = c.hora >= 12 ? 'p.m.' : 'a.m.';
+    var h12 = c.hora % 12 === 0 ? 12 : c.hora % 12;
+    return h12 + ':' + String(c.min).padStart(2, '0') + ' ' + suf;
+  }
+
+  /* Cuenta regresiva al segundo. Un tic por segundo sale barato y es lo que
+     de verdad engancha cuando la fecha ya está encima.
+
+     El titular y la cuenta salen del MISMO desglose: antes el titular
+     redondeaba hacia arriba y la cuenta hacia abajo, y con 39 días y medio
+     por delante la pantalla decía «40 días» encima de «39 d · 11 h». Cada
+     uno era correcto por su lado, pero juntos se contradecían. */
+  var tic = null;
+
+  function desglose(falta) {
+    var seg = Math.max(0, Math.floor(falta / 1000));
+    return {
+      dias: Math.floor(seg / 86400),
+      hh: Math.floor(seg % 86400 / 3600),
+      mm: Math.floor(seg % 3600 / 60),
+      ss: seg % 60
+    };
+  }
+
+  // Cuánto falta, tal como lo dice el número grande
+  function titular(falta) {
+    var t = desglose(falta);
+    if (t.dias >= 1) return { valor: t.dias, unidad: t.dias === 1 ? 'día' : 'días' };
+    if (t.hh >= 1) return { valor: t.hh, unidad: t.hh === 1 ? 'hora' : 'horas' };
+    return { valor: t.mm, unidad: t.mm === 1 ? 'minuto' : 'minutos' };
+  }
+
+  function refrescarCuenta() {
+    var d = datosDe(lugarActual);
+    var falta = d.proximo - Date.now();
+    var el = document.getElementById('countdown');
+
+    if (falta <= 0) {
+      el.textContent = '¡Está pasando ahora!';
+      document.getElementById('daysLeft').textContent = '0';
+      document.getElementById('daysUnit').textContent = 'días';
+      return;
+    }
+
+    var t = desglose(falta);
+    var dos = function (n) { return String(n).padStart(2, '0'); };
+    el.textContent = t.dias > 0
+      ? t.dias + ' d · ' + dos(t.hh) + ' h · ' + dos(t.mm) + ' m · ' + dos(t.ss) + ' s'
+      : dos(t.hh) + ' h · ' + dos(t.mm) + ' m · ' + dos(t.ss) + ' s';
+
+    // El titular se mantiene en sintonía con la cuenta al pasar cada frontera,
+    // salvo mientras la animación de entrada lo esté escribiendo.
+    var h = titular(falta);
+    var big = document.getElementById('daysLeft');
+    if (!animandoTitular && big.textContent !== String(h.valor)) big.textContent = h.valor;
+    document.getElementById('daysUnit').textContent = h.unidad;
+  }
+
+  function aplicarLugar(lugar) {
+    lugarActual = lugar;
+    document.getElementById('placeName').textContent = lugar.n;
+    document.querySelector('.place-hint').textContent = lugar.depto;
+
+    var d = datosDe(lugar);
+    var c = enHoraColombia(d.proximo);
+
+    var h = titular(d.proximo - Date.now());
+    contarHasta(document.getElementById('daysLeft'), h.valor);
+    document.getElementById('daysUnit').textContent = h.unidad;
+
+    // Fecha y hora en campos separados: son dos datos distintos y antes iban
+    // pegados en una sola frase corrida.
+    document.getElementById('nextDate').textContent = c.dia + ' de ' + MESES_LARGO[c.mes];
+    document.getElementById('nextYear').textContent = 'de ' + c.anio;
+    document.getElementById('nextTime').textContent = hora12(d.proximo);
+
+    refrescarCuenta();
+    if (tic) clearInterval(tic);
+    tic = setInterval(refrescarCuenta, 1000);
+
+    // Las dos fechas del año en curso
+    [[0, 'd1', 'm1', 'row1'], [1, 'd2', 'm2', 'row2']].forEach(function (p) {
+      var paso = d.delAnio[p[0]];
+      var fila = document.getElementById(p[3]);
+      if (paso === undefined) { fila.style.display = 'none'; return; }
+      fila.style.display = '';
+      var f = enHoraColombia(paso);
+      document.getElementById(p[1]).textContent = f.dia;
+      document.getElementById(p[2]).textContent = MESES[f.mes];
+      fila.classList.toggle('next', d.cual === p[0] + 1);
+      fila.querySelector('.s').textContent = d.cual === p[0] + 1
+        ? 'Este es el próximo · ' + hora12(paso)
+        : (paso < Date.now() ? 'Ya pasó · ' + hora12(paso)
+                             : 'Este año · ' + hora12(paso));
+    });
+
+    dibujarCurvaAnual(lugar);
+    // Si el globo estaba en "hoy" o "tu paso cenital", el día se recalcula
+    // para el lugar nuevo; si el usuario había arrastrado, se respeta.
+    if (globoModo) globoIr(globoModo); else dibujarGlobo();
+    setDia(modoDia);
+
+    // El aviso es de un lugar concreto: al mudarse hay que reprogramarlo.
+    if (avisoActivo) programarAviso(true);
+  }
+
+  // --- curva anual: altura máxima del sol al mediodía, día por día ---
+  var CHART_W = 300, CHART_TOPE = 14, CHART_BASE = 76;
+  var CHART_MIN = 40;   // grados: donde arranca el eje vertical
+
+  // Altura máxima real del sol el día n, con el motor NOAA
+  function alturaMaxima(lugar, anio, n) {
+    var f = new Date(Date.UTC(anio, 0, n));
+    var decl = declinacionEnMediodia(f.getUTCFullYear(), f.getUTCMonth(), f.getUTCDate(), lugar.lon);
+    return 90 - Math.abs(lugar.lat - decl);
+  }
+
+  function aY(grados) {
+    var t = (grados - CHART_MIN) / (90 - CHART_MIN);
+    return CHART_BASE - Math.max(0, Math.min(1, t)) * (CHART_BASE - CHART_TOPE);
+  }
+
+  function dibujarCurvaAnual(lugar) {
+    var d = datosDe(lugar);
+    var total = diasDelAnio(d.anio);
+    var aX = function (n) { return ((n - 1) / (total - 1)) * CHART_W; };
+
+    var puntos = [];
+    for (var n = 1; n <= total; n += 2) {
+      puntos.push(aX(n).toFixed(1) + ',' + aY(alturaMaxima(lugar, d.anio, n)).toFixed(1));
+    }
+    var linea = 'M' + puntos.join('L');
+    document.getElementById('yearLine').setAttribute('d', linea);
+    document.getElementById('yearArea').setAttribute(
+      'd', linea + 'L' + CHART_W + ',' + CHART_BASE + 'L0,' + CHART_BASE + 'Z');
+
+    ['yearMark1', 'yearMark2'].forEach(function (id, i) {
+      var marca = document.getElementById(id);
+      var paso = d.delAnio[i];
+      if (paso === undefined) { marca.setAttribute('r', 0); return; }
+      var n = diaDelAnioCol(paso);
+      marca.setAttribute('r', 4.5);
+      marca.setAttribute('cx', aX(n).toFixed(1));
+      marca.setAttribute('cy', aY(alturaMaxima(lugar, d.anio, n)).toFixed(1));
+    });
+
+    var xHoy = aX(diaDelAnioCol(Date.now()));
+    var hoyEl = document.getElementById('yearToday');
+    hoyEl.setAttribute('x1', xHoy.toFixed(1));
+    hoyEl.setAttribute('x2', xHoy.toFixed(1));
+  }
+
+  /* =====================================================================
+     AVISO — notificación local «mañana desaparece tu sombra»
+     ---------------------------------------------------------------------
+     Es la única razón de peso para instalar la app en vez de abrir la
+     página: el evento dura unos segundos, dos veces al año, y sin un
+     recordatorio te lo pierdes.
+
+     Corre sobre @capacitor/local-notifications, que solo existe dentro de
+     la app compilada. En el navegador `window.Capacitor` no está, así que
+     todo degrada a un aviso en pantalla en vez de romperse.
+
+     Se programa con alarma INEXACTA a propósito: un aviso la noche antes
+     no necesita precisión al segundo, y pedir SCHEDULE_EXACT_ALARM atrae
+     revisión extra de Google Play sin ganar nada.
+     ===================================================================== */
+
+  var ID_AVISO_VISPERA = 4101;
+  var ID_AVISO_DIA = 4102;
+  var LLAVE_AVISO = 'cenit.aviso';
+  var avisoActivo = false;
+
+  try { avisoActivo = localStorage.getItem(LLAVE_AVISO) === '1'; } catch (e) {}
+
+  function plugSono() {
+    return window.Capacitor && window.Capacitor.Plugins &&
+           window.Capacitor.Plugins.LocalNotifications;
+  }
+
+  // Instante UTC (ms) de una hora de pared colombiana
+  function msDesdeHoraColombia(anio, mes, dia, hora, min) {
+    return Date.UTC(anio, mes, dia) + (hora * 60 + min) * 60000 - TZ_COL * 3600000;
+  }
+
+  function pintarBotonAviso() {
+    var btn = document.getElementById('notifyBtn');
+    btn.classList.toggle('on', avisoActivo);
+    document.getElementById('notifyTxt').textContent =
+      avisoActivo ? 'Te avisaremos · toca para quitar' : 'Avísame el día antes';
+  }
+
+  function guardarAviso(v) {
+    avisoActivo = v;
+    try { localStorage.setItem(LLAVE_AVISO, v ? '1' : '0'); } catch (e) {}
+    pintarBotonAviso();
+  }
+
+  function programarAviso(silencioso) {
+    var ln = plugSono();
+    if (!ln) return Promise.resolve(false);
+
+    var d = datosDe(lugarActual);
+    if (d.proximo === null) return Promise.resolve(false);
+
+    var c = enHoraColombia(d.proximo);
+    var vispera = msDesdeHoraColombia(c.anio, c.mes, c.dia - 1, 19, 0);
+    var antes = d.proximo - 45 * 60000;
+    var ahora = Date.now();
+    var hora = hora12(d.proximo);
+
+    var avisos = [];
+    if (vispera > ahora) {
+      avisos.push({
+        id: ID_AVISO_VISPERA,
+        title: 'Mañana desaparece tu sombra',
+        body: 'En ' + lugarActual.n + ', a las ' + hora +
+              '. El sol queda justo encima: es tu paso cenital.',
+        schedule: { at: new Date(vispera) }
+      });
+    }
+    if (antes > ahora) {
+      avisos.push({
+        id: ID_AVISO_DIA,
+        title: 'Falta menos de una hora',
+        body: 'A las ' + hora + ' en ' + lugarActual.n +
+              ' tu sombra se mete debajo de tus pies. Salí a verlo.',
+        schedule: { at: new Date(antes) }
+      });
+    }
+    if (!avisos.length) return Promise.resolve(false);
+
+    return ln.cancel({ notifications: [{ id: ID_AVISO_VISPERA }, { id: ID_AVISO_DIA }] })
+      .catch(function () {})
+      .then(function () { return ln.schedule({ notifications: avisos }); })
+      .then(function () {
+        if (!silencioso) avisar('Listo: te avisamos la víspera y 45 min antes.');
+        return true;
+      })
+      .catch(function (e) {
+        if (!silencioso) avisar('No se pudo programar el aviso: ' + e.message);
+        return false;
+      });
+  }
+
+  function alternarAviso() {
+    var ln = plugSono();
+    if (!ln) {
+      avisar('Los avisos funcionan en la app instalada, no en el navegador.');
+      return;
+    }
+    if (avisoActivo) {
+      ln.cancel({ notifications: [{ id: ID_AVISO_VISPERA }, { id: ID_AVISO_DIA }] })
+        .catch(function () {})
+        .then(function () { guardarAviso(false); avisar('Aviso quitado.'); });
+      return;
+    }
+    // Android 13+ exige permiso en tiempo de ejecución
+    ln.requestPermissions().then(function (r) {
+      if (r.display !== 'granted') {
+        avisar('Sin permiso de notificaciones no podemos avisarte.');
+        return;
+      }
+      programarAviso(false).then(function (ok) { if (ok) guardarAviso(true); });
+    }).catch(function (e) {
+      avisar('No se pudo pedir el permiso: ' + e.message);
+    });
+  }
+
+  /* =====================================================================
+     GLOBO — proyección ortográfica centrada en TU meridiano
+     ---------------------------------------------------------------------
+     Truco que hace la escena legible: si evaluamos siempre en el mediodía
+     solar del lugar, el punto subsolar cae por definición sobre tu propia
+     longitud. Así el sol sube y baja por una recta vertical entre los dos
+     trópicos, y el paso cenital es literalmente el instante en que ese
+     punto cruza tu pin. Todo en SVG: sin librerías, sin red, sin mapas
+     que descargar.
+
+     En esta proyección los paralelos son rectas horizontales y los
+     meridianos semielipses de polo a polo, así que se dibuja con cuatro
+     líneas y un arco.
+     ===================================================================== */
+
+  var G_CX = 150, G_CY = 150, G_R = 130;
+  var globoDia = null;      // día del año que se está mostrando
+  var globoModo = 'hoy';    // 'hoy' | 'cenit' | null (el usuario arrastró)
+
+  function gY(lat) { return G_CY - G_R * Math.sin(lat * RAD); }
+  function gAncho(lat) { return G_R * Math.cos(lat * RAD); }
+
+  function svgEl(nombre, attrs) {
+    var e = document.createElementNS('http://www.w3.org/2000/svg', nombre);
+    for (var k in attrs) e.setAttribute(k, attrs[k]);
+    return e;
+  }
+
+  function construirGlobo() {
+    var ret = document.getElementById('reticula');
+    while (ret.firstChild) ret.removeChild(ret.firstChild);
+
+    for (var lat = -75; lat <= 75; lat += 15) {
+      if (lat === 0) continue;
+      var w = gAncho(lat), y = gY(lat);
+      ret.appendChild(svgEl('line', {
+        x1: (G_CX - w).toFixed(1), x2: (G_CX + w).toFixed(1),
+        y1: y.toFixed(1), y2: y.toFixed(1)
+      }));
+    }
+    for (var dl = -60; dl <= 60; dl += 30) {
+      if (dl === 0) continue;
+      var rx = Math.abs(G_R * Math.sin(dl * RAD));
+      ret.appendChild(svgEl('path', {
+        d: 'M' + G_CX + ',' + (G_CY - G_R) + 'A' + rx.toFixed(1) + ',' + G_R +
+           ' 0 0,' + (dl > 0 ? 1 : 0) + ' ' + G_CX + ',' + (G_CY + G_R)
+      }));
+    }
+
+    var tro = document.getElementById('tropicos');
+    while (tro.firstChild) tro.removeChild(tro.firstChild);
+    [LIMITE_TROPICO, -LIMITE_TROPICO].forEach(function (lat) {
+      var w = gAncho(lat), y = gY(lat);
+      tro.appendChild(svgEl('line', {
+        x1: (G_CX - w).toFixed(1), x2: (G_CX + w).toFixed(1),
+        y1: y.toFixed(1), y2: y.toFixed(1)
+      }));
+    });
+
+    var ecu = document.getElementById('ecuador');
+    ecu.setAttribute('x1', G_CX - G_R); ecu.setAttribute('x2', G_CX + G_R);
+    ecu.setAttribute('y1', G_CY);       ecu.setAttribute('y2', G_CY);
+
+    var yN = gY(LIMITE_TROPICO), yS = gY(-LIMITE_TROPICO);
+    var fr = document.getElementById('franja');
+    fr.setAttribute('y', yN.toFixed(1));
+    fr.setAttribute('height', (yS - yN).toFixed(1));
+
+    var rastro = document.getElementById('rastro');
+    rastro.setAttribute('y1', yN.toFixed(1));
+    rastro.setAttribute('y2', yS.toFixed(1));
+
+    /* Los rótulos se anclan al borde de la esfera A LA ALTURA DE CADA UNO,
+       no a un x fijo: la circunferencia se estrecha al subir, y con un x
+       común los de los trópicos se salían del globo. */
+    [['lblTropN', yN - 5], ['lblEcu', G_CY - 5], ['lblTropS', yS + 12]].forEach(function (p) {
+      var t = document.getElementById(p[0]);
+      var dy = Math.min(G_R, Math.abs(p[1] - G_CY));
+      var mitad = Math.sqrt(Math.max(0, G_R * G_R - dy * dy));
+      t.setAttribute('x', (G_CX + mitad - 6).toFixed(1));
+      t.setAttribute('y', p[1].toFixed(1));
+    });
+  }
+
+  function conPuntos(n) {
+    return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  }
+
+  function dibujarGlobo() {
+    var d = datosDe(lugarActual);
+    var total = diasDelAnio(d.anio);
+    if (globoDia === null) globoDia = diaDelAnioCol(Date.now());
+    var n = Math.max(1, Math.min(total, globoDia));
+
+    var sl = document.getElementById('globoSlider');
+    sl.max = total;
+    sl.value = n;
+
+    var f = new Date(Date.UTC(d.anio, 0, n));
+    var decl = declinacionEnMediodia(
+      f.getUTCFullYear(), f.getUTCMonth(), f.getUTCDate(), lugarActual.lon);
+
+    var ySol = gY(decl).toFixed(1), yTu = gY(lugarActual.lat).toFixed(1);
+    document.getElementById('solPt').setAttribute('cx', G_CX);
+    document.getElementById('solPt').setAttribute('cy', ySol);
+    document.getElementById('solGlow').setAttribute('cx', G_CX);
+    document.getElementById('solGlow').setAttribute('cy', ySol);
+    document.getElementById('tuPt').setAttribute('cx', G_CX);
+    document.getElementById('tuPt').setAttribute('cy', yTu);
+
+    document.getElementById('globoFecha').textContent =
+      f.getUTCDate() + ' ' + MESES[f.getUTCMonth()];
+
+    var sep = decl - lugarActual.lat;
+    var km = Math.round(Math.abs(sep) * 111.32);
+    document.getElementById('globoDist').textContent =
+      km < 20 ? '0 km' : conPuntos(km) + ' km';
+
+    var nota = document.getElementById('globoNota');
+    if (Math.abs(sep) < 0.2) {
+      nota.innerHTML = '<strong>Justo encima de ti.</strong> El sol cae perpendicular sobre ' +
+                       lugarActual.n + ': hoy no hay sombra al mediodía.';
+    } else {
+      nota.innerHTML = 'El sol está <strong>' + conPuntos(km) + ' km</strong> al ' +
+        (sep > 0 ? 'norte' : 'sur') + ' de ti. Al mediodía tu sombra apunta al ' +
+        (sep > 0 ? 'sur' : 'norte') + '.';
+    }
+  }
+
+  function marcarChipGlobo(cual) {
+    document.getElementById('gChipHoy').classList.toggle('on', cual === 'hoy');
+    document.getElementById('gChipCenit').classList.toggle('on', cual === 'cenit');
+  }
+
+  function onGlobo(v) {
+    globoModo = null;          // el dedo manda: se sale de "hoy"/"cenit"
+    globoDia = Number(v);
+    marcarChipGlobo(null);
+    dibujarGlobo();
+  }
+
+  function globoIr(cual) {
+    globoModo = cual;
+    var d = datosDe(lugarActual);
+    globoDia = cual === 'cenit' && d.proximo !== null
+      ? diaDelAnioCol(d.proximo)
+      : diaDelAnioCol(Date.now());
+    marcarChipGlobo(cual);
+    dibujarGlobo();
+  }
+
+  /* ---- hoja de selección: departamento → municipio --------------------
+     El botón ATRÁS de Android tiene que cerrar la hoja, no salirse de la
+     app. Se logra empujando una entrada al historial al abrirla: el back
+     dispara `popstate` y ahí la cerramos. Sin esto, en un celular real el
+     usuario abría la lista, tocaba atrás y perdía la app entera. */
+
+  function hojaAbierta() {
+    return document.getElementById('phone').classList.contains('sheet-open');
+  }
+
+  function abrirHoja() {
+    document.getElementById('phone').classList.add('sheet-open');
+    deptoAbierto = lugarActual.depto;
+    document.getElementById('searchInput').value = '';
+    textoBusqueda = '';
+    pintarLista();
+    try { history.pushState({ cenitHoja: true }, ''); } catch (e) {}
+  }
+
+  // desdeHistorial = true cuando nos llamó popstate (el historial ya retrocedió)
+  function cerrarHoja(desdeHistorial) {
+    var estaba = hojaAbierta();
+    document.getElementById('phone').classList.remove('sheet-open');
+    if (estaba && !desdeHistorial) {
+      try { if (history.state && history.state.cenitHoja) history.back(); } catch (e) {}
+    }
+  }
+
+  function volverADeptos() {
+    deptoAbierto = null;
+    document.getElementById('searchInput').value = '';
+    textoBusqueda = '';
+    pintarLista();
+  }
+
+  window.addEventListener('popstate', function () {
+    if (!hojaAbierta()) return;
+    // Mismo comportamiento que la flecha de la hoja: primero se sube un
+    // nivel (municipios → departamentos) y solo después se cierra.
+    if (deptoAbierto && !textoBusqueda) {
+      volverADeptos();
+      try { history.pushState({ cenitHoja: true }, ''); } catch (e) {}
+    } else {
+      cerrarHoja(true);
+    }
+  });
+
+  function filaMunicipio(m, mostrarDepto) {
+    var btn = document.createElement('button');
+    var esActual = m.n === lugarActual.n && m.depto === lugarActual.depto;
+    btn.className = 'sheet-city ripple-surface' + (esActual ? ' selected' : '');
+
+    var cuerpo = '<span class="radio"></span><span class="city-body">' + m.n;
+    if (mostrarDepto) cuerpo += '<span class="city-sub">' + m.depto + '</span>';
+    cuerpo += '</span>';
+    if (m.cap) cuerpo += '<span class="tag">CAPITAL</span>';
+    btn.innerHTML = cuerpo;
+
+    btn.addEventListener('pointerdown', ripple);
+    btn.addEventListener('click', function () {
+      aplicarLugar(m);
+      cerrarHoja();
+      avisar('Listo, ahora ves ' + m.n);
+    });
+    return btn;
+  }
+
+  function pintarLista() {
+    var cont = document.getElementById('cityList');
+    var titulo = document.getElementById('sheetTitle');
+    var atras = document.getElementById('backBtn');
+    cont.innerHTML = '';
+    var visibles = 0;
+
+    if (textoBusqueda) {
+      // Buscando: resultados de todo el país, con su departamento
+      titulo.textContent = 'Resultados';
+      atras.classList.toggle('show', deptoAbierto !== null);
+      TODOS.filter(function (m) {
+        return m.n.toLowerCase().indexOf(textoBusqueda) !== -1;
+      }).slice(0, 60).forEach(function (m) {
+        visibles++;
+        cont.appendChild(filaMunicipio(m, true));
+      });
+
+    } else if (deptoAbierto) {
+      // Dentro de un departamento
+      titulo.textContent = deptoAbierto;
+      atras.classList.add('show');
+      DEPTOS[deptoAbierto].forEach(function (m) {
+        visibles++;
+        cont.appendChild(filaMunicipio(m, false));
+      });
+
+    } else {
+      // Lista de departamentos
+      titulo.textContent = '¿Dónde estás?';
+      atras.classList.remove('show');
+      Object.keys(DEPTOS).sort(function (a, b) {
+        return a.localeCompare(b, 'es');
+      }).forEach(function (depto) {
+        visibles++;
+        var btn = document.createElement('button');
+        btn.className = 'depto-row ripple-surface';
+        btn.innerHTML =
+          '<span class="depto-name">' + depto + '</span>' +
+          '<span class="depto-count">' + DEPTOS[depto].length + '</span>' +
+          '<svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" ' +
+          'stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 6l6 6-6 6"/></svg>';
+        btn.addEventListener('pointerdown', ripple);
+        btn.addEventListener('click', function () {
+          deptoAbierto = depto;
+          pintarLista();
+          document.getElementById('cityList').scrollTop = 0;
+        });
+        cont.appendChild(btn);
+      });
+    }
+
+    document.getElementById('emptyState').style.display = visibles === 0 ? 'block' : 'none';
+  }
+
+  function buscar(texto) {
+    textoBusqueda = texto.trim().toLowerCase();
+    pintarLista();
+  }
+
+  sincronizarBarraEstado();
+  if (window.matchMedia) {
+    var consulta = window.matchMedia('(prefers-color-scheme: dark)');
+    if (consulta.addEventListener) consulta.addEventListener('change', sincronizarBarraEstado);
+  }
+
+  construirGlobo();
+  dibujarRegla();
+  pintarBotonAviso();
+  aplicarLugar(lugarActual);
+  marcarChipGlobo('hoy');
+  pintarLista();
+  dibujarEscena(720);
+
+  /* Si el aviso quedó activo de una sesión anterior, se reprograma: las
+     notificaciones de Android sobreviven al reinicio, pero una vez que el
+     paso cenital ocurre hay que apuntar al siguiente. */
+  if (avisoActivo && plugSono()) programarAviso(true);
+</script>
+
+</body>
+</html>

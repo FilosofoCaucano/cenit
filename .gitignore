@@ -1,0 +1,24 @@
+# Python
+__pycache__/
+*.pyc
+
+# Node / Capacitor
+movil/node_modules/
+# generado por build_movil.py (el comentario va aparte: git no admite
+# comentarios al final de línea, quedarían como parte del patrón)
+movil/www/
+movil/android/app/src/main/assets/public/
+movil/android/.gradle/
+movil/android/build/
+movil/android/app/build/
+movil/android/local.properties
+movil/android/capacitor-cordova-android-plugins/
+
+# Firma — si esto se filtra, cualquiera puede publicar actualizaciones
+# haciéndose pasar por la app. Y si se pierde, no podés actualizarla nunca más.
+*.jks
+*.keystore
+movil/android/key.properties
+
+# Fuente de GeoNames (se descarga aparte, ver generar_datos.py)
+CO.txt
