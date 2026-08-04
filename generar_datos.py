@@ -5,9 +5,8 @@ import json
 import os
 import sys
 
-SCRATCH = os.path.dirname(os.path.abspath(__file__))
-PROYECTO = r"c:\Users\Willi\Downloads\ProyectoAstronomia"
-sys.path.insert(0, PROYECTO)
+RAIZ = os.path.dirname(os.path.abspath(__file__))
+sys.path.insert(0, RAIZ)
 
 import solar  # noqa: E402
 import zenith  # noqa: E402
@@ -36,7 +35,7 @@ FORZAR = {
 
 por_depto = {}
 
-with io.open(os.path.join(SCRATCH, "CO.txt"), encoding="utf-8") as fh:
+with io.open(os.path.join(RAIZ, "CO.txt"), encoding="utf-8") as fh:
     for linea in fh:
         campos = linea.rstrip("\n").split("\t")
         if len(campos) < 15:
@@ -113,7 +112,7 @@ for codigo in sorted(NOMBRES, key=lambda c: NOMBRES[c]):
         salida[depto] = items
         total += len(items)
 
-with io.open(os.path.join(SCRATCH, "lugares.json"), "w", encoding="utf-8") as fh:
+with io.open(os.path.join(RAIZ, "lugares.json"), "w", encoding="utf-8") as fh:
     json.dump(salida, fh, ensure_ascii=False, separators=(",", ":"))
 
 # Módulo Python para la app de escritorio
@@ -131,7 +130,7 @@ Estructura: DEPARTAMENTOS[departamento] = [(municipio, lat, lon), ...]
 DEPARTAMENTOS = {{
 '''
 
-with io.open(os.path.join(SCRATCH, "lugares.py"), "w", encoding="utf-8") as fh:
+with io.open(os.path.join(RAIZ, "lugares.py"), "w", encoding="utf-8") as fh:
     fh.write(CABECERA.format(anio=ANIO))
     for depto in sorted(salida):
         fh.write(f'    "{depto}": [\n')
