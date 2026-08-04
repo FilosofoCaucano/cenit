@@ -1,0 +1,14 @@
+# Plantilla. Copiá este archivo como key.properties (mismo directorio) y
+# rellenalo con los datos reales del keystore.
+#
+# key.properties y el .jks NO se versionan: si esa clave se filtra, cualquiera
+# puede publicar actualizaciones haciéndose pasar por la app, y si se pierde,
+# la app no se puede volver a actualizar nunca. Guardá el .jks y estas
+# contraseñas en un gestor de contraseñas o similar, con respaldo.
+#
+# storeFile es relativo a movil/android/app/
+
+storeFile=../cenit-release.jks
+storePassword=
+keyAlias=cenit
+keyPassword=

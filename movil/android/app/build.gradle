@@ -1,5 +1,15 @@
 apply plugin: 'com.android.application'
 
+// Credenciales de firma. key.properties y el keystore quedan fuera del
+// repositorio a propósito (ver .gitignore de la raíz). Si el archivo no está,
+// el proyecto compila igual pero el release sale sin firmar: sirve para
+// desarrollo, no para subir a Play.
+def archivoClaves = rootProject.file("key.properties")
+def claves = new Properties()
+if (archivoClaves.exists()) {
+    archivoClaves.withInputStream { claves.load(it) }
+}
+
 android {
     namespace "co.cenit.diasinsombra"
     compileSdk rootProject.ext.compileSdkVersion
@@ -16,8 +26,21 @@ android {
             ignoreAssetsPattern '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    signingConfigs {
+        release {
+            if (archivoClaves.exists()) {
+                storeFile file(claves['storeFile'])
+                storePassword claves['storePassword']
+                keyAlias claves['keyAlias']
+                keyPassword claves['keyPassword']
+            }
+        }
+    }
     buildTypes {
         release {
+            if (archivoClaves.exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
