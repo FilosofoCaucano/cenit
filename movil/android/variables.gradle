@@ -1,7 +1,10 @@
 ext {
     minSdkVersion = 23
-    compileSdkVersion = 35
-    targetSdkVersion = 35
+    // API 36 (Android 16): Google Play lo exige a las apps nuevas desde el
+    // 31 de agosto de 2026. Capacitor lee estos valores desde rootProject.ext,
+    // así que cambiarlos aquí alcanza para todos sus módulos.
+    compileSdkVersion = 36
+    targetSdkVersion = 36
     androidxActivityVersion = '1.9.2'
     androidxAppCompatVersion = '1.7.0'
     androidxCoordinatorLayoutVersion = '1.2.0'
