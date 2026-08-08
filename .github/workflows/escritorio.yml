@@ -17,10 +17,14 @@ jobs:
       matrix:
         include:
           - os: windows-latest
-            nombre: Cenit-windows.exe
+            nombre: Cenit-windows-x64.exe
             binario: dist/Cenit.exe
-          - os: ubuntu-latest
-            nombre: Cenit-linux
+          # Se compila en la Ubuntu más vieja disponible a propósito: el
+          # binario exige la glibc de la máquina donde se generó o superior.
+          # Compilándolo en 24.04 no arrancaría en Mint 21 ni en Ubuntu 22.04,
+          # que siguen con soporte. Al revés sí funciona.
+          - os: ubuntu-22.04
+            nombre: Cenit-linux-x64
             binario: dist/Cenit
 
     runs-on: ${{ matrix.os }}
@@ -55,6 +59,16 @@ jobs:
           --collect-all customtkinter
           --collect-data plotly
           main.py
+
+      # Deja por escrito en el log qué glibc pide el binario, que es lo que
+      # decide en qué distribuciones arranca. Si algún día se cambia de
+      # runner, aquí se ve el impacto sin tener que adivinarlo.
+      - name: glibc que exige el binario (Linux)
+        if: runner.os == 'Linux'
+        run: |
+          minima=$(objdump -T "${{ matrix.binario }}" | grep -o 'GLIBC_[0-9.]*' | sed 's/GLIBC_//' | sort -V | tail -1)
+          echo "El binario requiere glibc >= $minima"
+          echo "glibc-minima=$minima" >> "$GITHUB_STEP_SUMMARY"
 
       # No basta con que el binario exista: lo que rompe de verdad es que
       # falte un import y muera al arrancar. Se lanza de verdad y se

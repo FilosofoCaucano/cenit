@@ -1,5 +1,9 @@
 # Cenit — Paso Cenital del Sol en Colombia
 
+[![Compilar escritorio](https://github.com/FilosofoCaucano/cenit/actions/workflows/escritorio.yml/badge.svg)](https://github.com/FilosofoCaucano/cenit/actions/workflows/escritorio.yml)
+[![Licencia: MIT](https://img.shields.io/badge/licencia-MIT-blue.svg)](LICENSE)
+[![Descargas](https://img.shields.io/github/downloads/FilosofoCaucano/cenit/total.svg)](https://github.com/FilosofoCaucano/cenit/releases)
+
 Calcula, para cualquier ubicación de Colombia, las dos fechas del año en que el
 sol pasa exactamente por el cenit al mediodía solar: el momento en que los
 objetos verticales no proyectan sombra.
@@ -11,23 +15,51 @@ dentro de ella.
 El proyecto tiene dos frentes que comparten los mismos cálculos: una aplicación
 de escritorio en Python y una app Android.
 
-## Descargar
+---
 
-Los ejecutables de cada versión están en la [página de Releases](https://github.com/FilosofoCaucano/cenit/releases).
-No hace falta instalar Python.
+# ⬇️ Descargar
 
-| Sistema | Archivo | Cómo se abre |
-|---|---|---|
-| Windows | `Cenit-windows.exe` | Doble clic |
-| Linux | `Cenit-linux` | `chmod +x Cenit-linux` y después `./Cenit-linux` |
+**No hace falta instalar Python ni nada más.** Descargá un solo archivo y abrilo.
 
-En Windows, la primera vez aparece un aviso de SmartScreen porque el
-ejecutable no está firmado con un certificado de pago: **Más información →
-Ejecutar de todas formas**.
+### 🪟 Windows (64 bits)
 
-No hay versión para macOS: Apple bloquea las aplicaciones sin notarizar, y
-notarizar exige una suscripción anual al programa de desarrolladores. En Mac
-se puede usar igual desde el código fuente, como se explica abajo.
+**[Descargar Cenit-windows-x64.exe](https://github.com/FilosofoCaucano/cenit/releases/latest)**
+
+Doble clic y listo. La primera vez Windows muestra una pantalla azul que dice
+*"Windows protegió su PC"*: es porque el ejecutable no está firmado con un
+certificado de pago, no porque tenga nada raro. Hacé clic en **Más información**
+y después en **Ejecutar de todas formas**.
+
+Requiere Windows 10 o posterior.
+
+### 🐧 Linux (64 bits)
+
+**[Descargar Cenit-linux-x64](https://github.com/FilosofoCaucano/cenit/releases/latest)**
+
+```bash
+chmod +x Cenit-linux-x64
+./Cenit-linux-x64
+```
+
+Probado sobre Ubuntu. Sirve para **Linux Mint, Ubuntu, Pop!_OS, Debian** y
+demás derivadas. Mint está basada en Ubuntu, que a su vez desciende de Debian,
+así que el mismo binario vale para todas.
+
+Se compila sobre Ubuntu 22.04, de modo que funciona en esa versión y en
+cualquiera posterior — incluidas Mint 21 y 22. En distribuciones más antiguas
+puede fallar con un error de `GLIBC`: en ese caso, usalo desde el código fuente.
+
+### 🍎 macOS
+
+No hay ejecutable. macOS bloquea las aplicaciones que no estén notarizadas por
+Apple, y notarizar exige una suscripción anual de pago al programa de
+desarrolladores. En Mac se puede usar igual desde el código fuente.
+
+### 📱 Android
+
+En camino.
+
+---
 
 ## Escritorio desde el código
 
