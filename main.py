@@ -13,6 +13,7 @@ import customtkinter as ctk
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from matplotlib.figure import Figure
 
+import fechas
 import lugares
 import mapsim
 import solar
@@ -23,6 +24,10 @@ ctk.set_default_color_theme("blue")
 
 KM_POR_GRADO = 111.32
 DIAS_ENTRE_TROPICOS_PCT = 39.8  # % de la superficie terrestre entre los trópicos
+
+# Cuánto se sigue mostrando "¡Es ahora!" después del instante exacto, antes de
+# pasar a contar hacia el siguiente paso.
+SEGUNDOS_AVISO_PASO = 300
 
 
 class CenitApp(ctk.CTk):
@@ -272,7 +277,7 @@ class CenitApp(ctk.CTk):
         lineas = []
         for etiqueta, p in zip(etiquetas, self.passages_this_year):
             local = p.astimezone(solar.COLOMBIA_TZ)
-            lineas.append(f"{etiqueta}:\n  {local.strftime('%d de %B de %Y, %I:%M %p')}")
+            lineas.append(f"{etiqueta}:\n  {fechas.completa(local)}")
 
         if len(self.passages_this_year) == 2:
             dias = (self.passages_this_year[1] - self.passages_this_year[0]).days
@@ -356,9 +361,18 @@ class CenitApp(ctk.CTk):
             return
 
         local = self.next_passage.astimezone(solar.COLOMBIA_TZ)
-        self.next_date_label.configure(text=local.strftime("%d de %B de %Y, %I:%M %p (hora Colombia)"))
+        self.next_date_label.configure(text=f"{fechas.completa(local)} (hora Colombia)")
 
-        remaining = self.next_passage - datetime.now(solar.COLOMBIA_TZ)
+        ahora = datetime.now(solar.COLOMBIA_TZ)
+        remaining = self.next_passage - ahora
+        if remaining.total_seconds() <= -SEGUNDOS_AVISO_PASO:
+            # Ya pasó hace rato: se busca el siguiente. Sin esto la cuenta se
+            # quedaba clavada en "¡Es ahora!" hasta que el usuario volviera a
+            # pulsar Calcular, y es justo el día del paso cuando la gente abre
+            # la aplicación.
+            self.next_passage = zenith.next_zenith_passage(self.lat, self.lon, ahora)
+            self.countdown_job = self.after(1000, self._tick_countdown)
+            return
         if remaining.total_seconds() <= 0:
             self.countdown_label.configure(text="¡Es ahora!")
         else:

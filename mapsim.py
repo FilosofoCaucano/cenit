@@ -12,6 +12,7 @@ from datetime import datetime, timedelta, timezone
 
 import plotly.graph_objects as go
 
+import fechas
 import solar
 
 TROPIC_LAT = 23.437
@@ -94,7 +95,7 @@ def build_globe_figure(lat, lon, name, next_passage_utc):
     for i in range(0, 366, 4):
         moment = (start + timedelta(days=i)).replace(hour=hour_fixed, minute=minute_fixed)
         flat, flon = _subsolar_point(moment)
-        label = moment.strftime("%d %b")
+        label = fechas.dia_mes_corto(moment)
         frames.append(
             go.Frame(
                 data=[go.Scattergeo(lon=[flon], lat=[flat])],
