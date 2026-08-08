@@ -5,6 +5,7 @@ datasets aparte) y se abre en el navegador por defecto del sistema.
 """
 
 import os
+import pathlib
 import tempfile
 import webbrowser
 from datetime import datetime, timedelta, timezone
@@ -153,5 +154,7 @@ def open_globe_simulator(lat, lon, name, next_passage_utc):
     fig = build_globe_figure(lat, lon, name, next_passage_utc)
     path = os.path.join(tempfile.gettempdir(), "cenit_simulador.html")
     fig.write_html(path, auto_open=False)
-    webbrowser.open(f"file:///{path}")
+    # as_uri() en vez de componer "file:///" + ruta: en Linux la ruta ya
+    # empieza por "/" y salía file:////tmp/... con cuatro barras.
+    webbrowser.open(pathlib.Path(path).as_uri())
     return path

@@ -11,7 +11,25 @@ dentro de ella.
 El proyecto tiene dos frentes que comparten los mismos cálculos: una aplicación
 de escritorio en Python y una app Android.
 
-## Escritorio
+## Descargar
+
+Los ejecutables de cada versión están en la [página de Releases](https://github.com/FilosofoCaucano/cenit/releases).
+No hace falta instalar Python.
+
+| Sistema | Archivo | Cómo se abre |
+|---|---|---|
+| Windows | `Cenit-windows.exe` | Doble clic |
+| Linux | `Cenit-linux` | `chmod +x Cenit-linux` y después `./Cenit-linux` |
+
+En Windows, la primera vez aparece un aviso de SmartScreen porque el
+ejecutable no está firmado con un certificado de pago: **Más información →
+Ejecutar de todas formas**.
+
+No hay versión para macOS: Apple bloquea las aplicaciones sin notarizar, y
+notarizar exige una suscripción anual al programa de desarrolladores. En Mac
+se puede usar igual desde el código fuente, como se explica abajo.
+
+## Escritorio desde el código
 
 ```bash
 pip install -r requirements.txt
@@ -66,3 +84,25 @@ Los keystores (`*.jks`, `*.keystore`) y `movil/android/key.properties` están
 excluidos del repositorio a propósito. Si esa clave se filtra, cualquiera puede
 publicar actualizaciones haciéndose pasar por la app; si se pierde, la app no se
 puede volver a actualizar nunca. Guardala aparte y con respaldo.
+
+## Publicar una versión
+
+Los ejecutables los compila GitHub Actions, no hace falta compilarlos a mano.
+Al empujar una etiqueta se generan los binarios de Windows y Linux, se prueba
+que cada uno arranque de verdad y se publica la Release:
+
+```bash
+git tag v1.0.0
+git push origin v1.0.0
+```
+
+Desde la pestaña Actions se puede lanzar el mismo flujo a mano, sin publicar
+nada: deja los binarios como artefactos descargables.
+
+## Licencia
+
+[MIT](LICENSE) — se puede usar, modificar y redistribuir libremente,
+conservando el aviso de autoría.
+
+Los datos de municipios provienen de [GeoNames](https://www.geonames.org/),
+bajo licencia CC BY 4.0.
