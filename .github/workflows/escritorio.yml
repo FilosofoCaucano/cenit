@@ -60,15 +60,21 @@ jobs:
           --collect-data plotly
           main.py
 
-      # Deja por escrito en el log qué glibc pide el binario, que es lo que
+      # Deja anotado en el log el suelo de compatibilidad, que es lo que
       # decide en qué distribuciones arranca. Si algún día se cambia de
       # runner, aquí se ve el impacto sin tener que adivinarlo.
-      - name: glibc que exige el binario (Linux)
+      #
+      # Se informa la glibc de ESTA máquina, no la que reporta objdump sobre
+      # el ejecutable: ahí solo se ve el bootloader de PyInstaller, que pide
+      # una versión muy vieja (2.14) y engaña. Las librerías que de verdad
+      # mandan (libpython, _tkinter...) viajan empaquetadas dentro y vienen
+      # de este runner, así que el suelo real es el de aquí.
+      - name: Suelo de compatibilidad (Linux)
         if: runner.os == 'Linux'
         run: |
-          minima=$(objdump -T "${{ matrix.binario }}" | grep -o 'GLIBC_[0-9.]*' | sed 's/GLIBC_//' | sort -V | tail -1)
-          echo "El binario requiere glibc >= $minima"
-          echo "glibc-minima=$minima" >> "$GITHUB_STEP_SUMMARY"
+          glibc=$(ldd --version | head -1 | grep -o '[0-9]\+\.[0-9]\+$')
+          echo "Compilado contra glibc $glibc — no arrancará en distribuciones anteriores."
+          echo "Compilado contra glibc \`$glibc\`" >> "$GITHUB_STEP_SUMMARY"
 
       # No basta con que el binario exista: lo que rompe de verdad es que
       # falte un import y muera al arrancar. Se lanza de verdad y se

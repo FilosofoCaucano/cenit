@@ -45,9 +45,18 @@ Probado sobre Ubuntu. Sirve para **Linux Mint, Ubuntu, Pop!_OS, Debian** y
 demás derivadas. Mint está basada en Ubuntu, que a su vez desciende de Debian,
 así que el mismo binario vale para todas.
 
-Se compila sobre Ubuntu 22.04, de modo que funciona en esa versión y en
-cualquiera posterior — incluidas Mint 21 y 22. En distribuciones más antiguas
-puede fallar con un error de `GLIBC`: en ese caso, usalo desde el código fuente.
+Se compila sobre Ubuntu 22.04 (glibc 2.35), así que funciona en esa versión y
+en cualquiera posterior:
+
+| Distribución | Desde |
+|---|---|
+| Linux Mint | 21 |
+| Ubuntu | 22.04 |
+| Debian | 12 (bookworm) |
+| Pop!_OS | 22.04 |
+
+En distribuciones anteriores falla con un error de `GLIBC`. En ese caso, usalo
+desde el código fuente, que no tiene esa limitación.
 
 ### 🍎 macOS
 
